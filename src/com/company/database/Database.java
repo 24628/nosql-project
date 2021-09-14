@@ -13,7 +13,7 @@ import java.util.List;
 public class Database {
 
     private MongoDatabase database;
-    private final String conS = "mongodb+srv://new-user31:qx7AA7LwaCD5WHj@cluster0.twb3h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    private final String conS = "mongodb+srv://dbUser:Welkom1234!@cluster0.fpuzw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
     public Database(String DatabaseName) {
         MongoClient mongoClient = MongoClients.create(this.conS);

@@ -14,7 +14,7 @@ public class Connection {
     private final String collectionName = "sample_soccer_players";
 
     public Connection(){
-        this.database = new Database("noSql");
+        this.database = new Database("noSqlTest");
 
         System.out.println("Running test cases");
 
