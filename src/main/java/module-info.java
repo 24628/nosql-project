@@ -7,8 +7,8 @@ module com.example.projectnosqllol {
     requires org.kordamp.bootstrapfx.core;
     requires mongo.java.driver;
 
-    opens src to javafx.fxml;
-    exports src;
-    exports src.controller;
-    opens src.controller to javafx.fxml;
+    opens app to javafx.fxml;
+    exports app;
+    exports app.controller;
+    opens app.controller to javafx.fxml;
 }
