@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/nosqlProject.iml" filepath="$PROJECT_DIR$/nosqlProject.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ProjectNoSQLLOL.iml" filepath="$PROJECT_DIR$/ProjectNoSQLLOL.iml" />
     </modules>
   </component>
 </project>
