@@ -1,5 +1,7 @@
 package app.views;
 
+import app.views.partial.TicketListView;
+import app.views.partial.UserListView;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;

@@ -1,7 +1,8 @@
-package app.views;
+package app.views.partial;
 
 import app.database.Database;
 import app.model.User;
+import app.views.BaseListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -11,16 +12,16 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class UserListView extends VBox {
+public class UserListView extends BaseListView {
 
     // This is just a mess that is there for filler. Has nothing to do with the assignments ;)
 
     private TableView<User> table = new TableView<>();
-    private Database db;
+
 
     public UserListView() {
 
-        db = new Database("noSql");
+
 
         ObservableList<User> data = FXCollections.observableArrayList();
 
@@ -64,7 +65,7 @@ public class UserListView extends VBox {
         Button deleteUserButton = new Button("Delete User");
         studentMenu.getChildren().addAll(addUserButton, editUserButton, deleteUserButton);
 
-        this.getChildren().addAll(heading, table, studentMenu);
+
     }
 }
 
