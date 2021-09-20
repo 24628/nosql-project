@@ -18,6 +18,8 @@ public class MainWindow {
     public MainWindow() {
         // create a new Stage (window)
         stage = new Stage();
+        // set the window to max size
+        stage.setMaximized(true);
 
         // setup the global layout, menu on the left, subscene on the right
         HBox layout = new HBox();
