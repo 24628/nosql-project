@@ -36,6 +36,9 @@ public class MainWindow {
 
         menu.getChildren().addAll(ticketButton, userButton);
 
+        // container for dashboard and listviews
+        VBox container = new VBox();
+
         ticketButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {

@@ -28,10 +28,10 @@ public class TicketListView extends VBox {
         Date date = new Date(System.currentTimeMillis());
 
         ObservableList<Ticket> data2 = FXCollections.observableArrayList(
-                new Ticket(/*date,*/ "incident 1", "Kassa", "obj(id:123123213)", "High", /*date,*/ "this is the description"),
-                new Ticket(/*date,*/ "incident 2", "Computer", "obj(id:123123213)", "High", /*date,*/ "this is the description"),
-                new Ticket(/*date,*/ "incident 3", "Jaap", "obj(id:123123213)", "High", /*date,*/ "this is the description"),
-                new Ticket(/*date,*/ "incident 4", "Kassa", "obj(id:123123213)", "High", /*date,*/ "this is the description"));
+                new Ticket(date, "incident 1", "Kassa", "obj(id:123123213)", "High", date, "this is the description"),
+                new Ticket(date,"incident 2", "Computer", "obj(id:123123213)", "High", date, "this is the description"),
+                new Ticket(date, "incident 3", "Jaap", "obj(id:123123213)", "High", date, "this is the description"),
+                new Ticket(date, "incident 4", "Kassa", "obj(id:123123213)", "High", date, "this is the description"));
 
 
 
@@ -47,34 +47,33 @@ public class TicketListView extends VBox {
         table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 
         // Make columns and add to table
-        TableColumn<Ticket, String> column1 = new TableColumn<>("incident");
-        column1.setCellValueFactory(new PropertyValueFactory<>("incident"));
-        TableColumn<Ticket, String> column2 = new TableColumn<>("type");
-        column2.setCellValueFactory(new PropertyValueFactory<>("type"));
-        TableColumn<Ticket, String> column3 = new TableColumn<>("user_id");
-        column3.setCellValueFactory(new PropertyValueFactory<>("user_id"));
-        TableColumn<Ticket, String> column4 = new TableColumn<>("priority");
-        column4.setCellValueFactory(new PropertyValueFactory<>("priority"));
-        TableColumn<Ticket, String> column5 = new TableColumn<>("description");
-        column5.setCellValueFactory(new PropertyValueFactory<>("description"));
+        TableColumn<Ticket, String> reportedCol = new TableColumn<>("reported");
+        reportedCol.setCellValueFactory(new PropertyValueFactory<>("reported"));
+        TableColumn<Ticket, String> incidentCol = new TableColumn<>("incident");
+        incidentCol.setCellValueFactory(new PropertyValueFactory<>("incident"));
+        TableColumn<Ticket, String> typeCol = new TableColumn<>("type");
+        typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        TableColumn<Ticket, String> userCol = new TableColumn<>("user_id");
+        userCol.setCellValueFactory(new PropertyValueFactory<>("user_id"));
+        TableColumn<Ticket, String> priorityCol = new TableColumn<>("priority");
+        priorityCol.setCellValueFactory(new PropertyValueFactory<>("priority"));
+        TableColumn<Ticket, String> deadlineCol = new TableColumn<>("deadline");
+        deadlineCol.setCellValueFactory(new PropertyValueFactory<>("deadline"));
+        TableColumn<Ticket, String> descriptionCol = new TableColumn<>("description");
+        descriptionCol.setCellValueFactory(new PropertyValueFactory<>("description"));
 
-        table.getColumns().add(column1);
-        table.getColumns().add(column2);
-        table.getColumns().add(column3);
-        table.getColumns().add(column4);
-        table.getColumns().add(column5);
+
+        table.getColumns().add(reportedCol);
+        table.getColumns().add(incidentCol);
+        table.getColumns().add(typeCol);
+        table.getColumns().add(userCol);
+        table.getColumns().add(priorityCol);
+        table.getColumns().add(deadlineCol);
+        table.getColumns().add(descriptionCol);
 
         for (Ticket item: data2) {
             table.getItems().add(item);
         }
-
-
-
-
-
-
-
-
 
 
 
