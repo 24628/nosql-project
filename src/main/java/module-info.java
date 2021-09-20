@@ -8,6 +8,7 @@ module com.example.projectnosqllol {
     requires mongo.java.driver;
 
     opens app to javafx.fxml;
+    opens app.model;
     exports app;
     exports app.controller;
     opens app.controller to javafx.fxml;
