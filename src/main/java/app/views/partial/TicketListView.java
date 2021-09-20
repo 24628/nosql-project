@@ -41,11 +41,7 @@ public class TicketListView extends BaseListView {
 
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
 
-        for(String name: columnNames){
-            TableColumn<Ticket, String> colType = new TableColumn<>(name);
-            colType.setCellValueFactory(new PropertyValueFactory<>(name));
-            table.getColumns().add(colType);
-        }
+        this.generateData(columnNames,"Ticket");
 
         for (Ticket item : data2) {
             table.getItems().add(item);
@@ -55,4 +51,6 @@ public class TicketListView extends BaseListView {
 
         getChildren().addAll(heading, table, menu);
     }
+
+
 }

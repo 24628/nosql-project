@@ -66,6 +66,10 @@ public class UserListView extends BaseListView {
         studentMenu.getChildren().addAll(addUserButton, editUserButton, deleteUserButton);
 
 
+
+        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+
+        this.generateData(columnNames, "User");
     }
 }
 
