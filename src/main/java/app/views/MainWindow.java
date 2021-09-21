@@ -30,6 +30,19 @@ public class MainWindow {
         VBox container = new VBox();
         HBox nav_bar = new HBox();
 
+        container.setStyle("-fx-padding: 0;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 5;" +
+                "-fx-border-radius: 1;" +
+                "-fx-border-color: black;");
+        nav_bar.setStyle("-fx-padding: 0;" +
+                "-fx-border-style: solid inside;" +
+                "-fx-border-width: 2;" +
+                "-fx-border-insets: 0;" +
+                "-fx-border-radius: 1;" +
+                "-fx-border-color: black;");
+
         // labels for title and description
         Label title = new Label("NoDesk");
         title.setFont(Font.font ("Verdana", 20));
