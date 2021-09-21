@@ -17,7 +17,7 @@ public class BaseListView extends VBox {
     protected TableView<BaseModel> table;
 
     public BaseListView(){
-        db = new Database("noSql");
+        db = new Database("ProjectNoSQL");
     }
 
     protected Label addHeaders(String headerName){

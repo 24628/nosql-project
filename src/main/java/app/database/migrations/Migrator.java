@@ -10,7 +10,7 @@ public class Migrator {
     protected final Database database;
 
     public Migrator(){
-        this.database = new Database("noSql");
+        this.database = new Database("ProjectNoSQL");
 
         System.out.println("Starting migrations!");
     }

@@ -1,6 +1,8 @@
 package app.views.partial;
 
 import app.database.Database;
+import app.model.BaseModel;
+import app.model.Ticket;
 import app.model.User;
 import app.views.BaseListView;
 import javafx.collections.FXCollections;
@@ -11,65 +13,59 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import org.bson.Document;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 
 public class UserListView extends BaseListView {
 
-    // This is just a mess that is there for filler. Has nothing to do with the assignments ;)
-
-    private TableView<User> table = new TableView<>();
-
-
     public UserListView() {
+        this.generateTable();
 
+        this.fillTableWithData();
 
+        Label heading = this.addHeaders("Users");
 
-        ObservableList<User> data = FXCollections.observableArrayList();
-
-        this.setPadding(new Insets(20));
-
-        Label heading = new Label();
-        heading.setText("Users");
-        heading.getStyleClass().add("header");
-
-
-        table.setEditable(true);
-        table.getSelectionModel().setCellSelectionEnabled(true);
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        TableColumn firstNameCol = new TableColumn("First Name");
-        firstNameCol.setMinWidth(150);
-        firstNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("firstName"));
-
-        TableColumn lastNameCol = new TableColumn("Last Name");
-        lastNameCol.setMinWidth(220);
-        lastNameCol.setCellValueFactory(new PropertyValueFactory<User, String>("lastName"));
-
-        TableColumn emailCol = new TableColumn("Email");
-        emailCol.setMinWidth(250);
-        emailCol.setCellValueFactory(new PropertyValueFactory<User, String>("email"));
-
-        TableColumn groupCol = new TableColumn("Salary");
-        groupCol.setMinWidth(250);
-        groupCol.setCellValueFactory(new PropertyValueFactory<User, String>("salary"));
-
-        table.setItems(data);
-        table.getColumns().addAll(firstNameCol, lastNameCol, emailCol, groupCol);
-
-
-        HBox studentMenu = new HBox();
-        studentMenu.setPadding(new Insets(20,0,0,0));
-        studentMenu.setSpacing(10);
-
-        Button addUserButton = new Button("Add User");
-        Button editUserButton = new Button("Edit User");
-        Button deleteUserButton = new Button("Delete User");
-        studentMenu.getChildren().addAll(addUserButton, editUserButton, deleteUserButton);
-
-
-
-        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
-
+        String[] columnNames = {"First Name", "Last Name", "Email", "Phone number", "Created_at", "Updated_at"};
         this.generateData(columnNames);
+
+        HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
+
+        getChildren().addAll(heading, table, menu);
+    }
+
+    protected void fillTableWithData() {
+        ObservableList<User> tableList = FXCollections.observableArrayList();
+        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        for (Document doc : db.findAll("users")) {
+            try {
+                tableList.add(new User(
+                        doc.get("firstName").toString(),
+                        doc.get("lastName").toString(),
+                        doc.get("email").toString(),
+                        Float.parseFloat(doc.get("phonenumber").toString()),
+                        dateFormat.parse(doc.get("created_at").toString()),
+                        dateFormat.parse(doc.get("updated_at").toString())
+                ));
+            } catch (ParseException e){System.out.println(e.toString());}
+        }
+
+        for (BaseModel item : tableList) {
+            table.getItems().add(item);
+        }
+    }
+
+    protected void handleCreateBtnClick() {
+        System.out.println("handle create");
+    }
+
+    protected void handleEditBtnClick() {
+        System.out.println("handle edit");
+    }
+
+    protected void handleDeleteBtnClick() {
+        System.out.println("handle delete");
     }
 }
 
