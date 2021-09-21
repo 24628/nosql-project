@@ -2,7 +2,7 @@ package app.model;
 
 import java.util.Date;
 
-public class User {
+public class User extends BaseModel{
 
     protected String firstName;
     protected String lastName;

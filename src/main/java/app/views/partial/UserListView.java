@@ -69,7 +69,7 @@ public class UserListView extends BaseListView {
 
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
 
-        this.generateData(columnNames, "User");
+        this.generateData(columnNames);
     }
 }
 

@@ -1,56 +1,65 @@
 package app.views.partial;
 
+import app.model.BaseModel;
 import app.model.Ticket;
 import app.views.BaseListView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
-import javafx.scene.control.SelectionMode;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
+import org.bson.Document;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 public class TicketListView extends BaseListView {
 
-    // This is just a mess that is there for filler. Has nothing to do with the assignments ;)
-
     public TicketListView() {
+        this.generateTable();
 
-        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        Date date = new Date(System.currentTimeMillis());
-
-        ObservableList<Ticket> data2 = FXCollections.observableArrayList(
-                new Ticket(date, "incident 1", "Kassa", "obj(id:123123213)", "High", date, "this is the description"),
-                new Ticket(date, "incident 2", "Computer", "obj(id:123123213)", "High", date, "this is the description"),
-                new Ticket(date, "incident 3", "Jaap", "obj(id:123123213)", "High", date, "this is the description"),
-                new Ticket(date, "incident 4", "Kassa", "obj(id:123123213)", "High", date, "this is the description"));
-
-
-        Label heading = this.addHeaders("Tickets");
-
-        TableView<Ticket> table = new TableView<>();
-        table.setEditable(true);
-        table.getSelectionModel().setCellSelectionEnabled(true);
-        table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-
-        // Make columns and add to table
-
-        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
-
-        this.generateData(columnNames,"Ticket");
-
-        for (Ticket item : data2) {
+        for (BaseModel item : this.getTableData()) {
             table.getItems().add(item);
         }
+        Label heading = this.addHeaders("Tickets");
+
+        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+        this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
 
         getChildren().addAll(heading, table, menu);
     }
 
+    private ObservableList<Ticket> getTableData() {
+        ObservableList<Ticket> tableList = FXCollections.observableArrayList();
+        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        for (Document doc : db.findAll("Tickets")) {
+            try {
+                tableList.add(new Ticket(
+                        dateFormat.parse(doc.get("Reported").toString()),
+                        doc.get("incident").toString(),
+                        doc.get("type").toString(),
+                        doc.get("user_id").toString(),
+                        doc.get("priority").toString(),
+                        dateFormat.parse(doc.get("deadline").toString()),
+                        doc.get("description").toString()
+                ));
+            } catch (ParseException e){System.out.println(e.toString());}
+        }
+
+        return tableList;
+    }
+
+    protected void handleCreateBtnClick() {
+        System.out.println("handle create");
+    }
+
+    protected void handleEditBtnClick() {
+        System.out.println("handle edit");
+    }
+
+    protected void handleDeleteBtnClick() {
+        System.out.println("handle delete");
+    }
 
 }

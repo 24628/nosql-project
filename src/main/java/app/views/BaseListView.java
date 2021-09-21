@@ -1,11 +1,12 @@
 package app.views;
 
 import app.database.Database;
+import app.model.BaseModel;
+import app.views.partial.UserListView;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -13,6 +14,7 @@ import javafx.scene.layout.VBox;
 public class BaseListView extends VBox {
 
     protected Database db;
+    protected TableView<BaseModel> table;
 
     public BaseListView(){
         db = new Database("noSql");
@@ -38,14 +40,29 @@ public class BaseListView extends VBox {
         Button deleteButton = new Button(deleteText);
         btnMenu.getChildren().addAll(addButton, editButton, deleteButton);
 
+        addButton.setOnAction(actionEvent -> this.handleCreateBtnClick());
+        editButton.setOnAction(actionEvent -> this.handleEditBtnClick());
+        deleteButton.setOnAction(actionEvent -> this.handleDeleteBtnClick());
+
         return btnMenu;
     }
 
-    protected void generateData(String[] columnNames, String Model){
+    protected void generateTable(){
+        this.table = new TableView<>();;
+        this.table.setEditable(true);
+        this.table.getSelectionModel().setCellSelectionEnabled(true);
+        this.table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    }
+
+    protected void generateData(String[] columnNames){
         for(String name: columnNames){
-            TableColumn<Model, String> colType = new TableColumn<>(name);
+            TableColumn<BaseModel, String> colType = new TableColumn<>(name);
             colType.setCellValueFactory(new PropertyValueFactory<>(name));
-            table.getColumns().add(colType);
+            this.table.getColumns().add(colType);
         }
     }
+
+    protected void handleCreateBtnClick(){}
+    protected void handleEditBtnClick(){}
+    protected void handleDeleteBtnClick(){}
 }

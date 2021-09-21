@@ -6,7 +6,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 
 import java.util.Date;
 
-public class Ticket {
+public class Ticket extends BaseModel{
 
     private Date reported;
     private String incident;
