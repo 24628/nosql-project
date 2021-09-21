@@ -17,9 +17,8 @@ public class TicketListView extends BaseListView {
     public TicketListView() {
         this.generateTable();
 
-        for (BaseModel item : this.getTableData()) {
-            table.getItems().add(item);
-        }
+        this.fillTableWithData();
+
         Label heading = this.addHeaders("Tickets");
 
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
@@ -30,7 +29,7 @@ public class TicketListView extends BaseListView {
         getChildren().addAll(heading, table, menu);
     }
 
-    private ObservableList<Ticket> getTableData() {
+    protected void fillTableWithData() {
         ObservableList<Ticket> tableList = FXCollections.observableArrayList();
         SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         for (Document doc : db.findAll("Tickets")) {
@@ -47,7 +46,9 @@ public class TicketListView extends BaseListView {
             } catch (ParseException e){System.out.println(e.toString());}
         }
 
-        return tableList;
+        for (BaseModel item : tableList) {
+            table.getItems().add(item);
+        }
     }
 
     protected void handleCreateBtnClick() {

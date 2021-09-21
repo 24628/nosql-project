@@ -62,6 +62,7 @@ public class BaseListView extends VBox {
         }
     }
 
+    protected void fillTableWithData(){}
     protected void handleCreateBtnClick(){}
     protected void handleEditBtnClick(){}
     protected void handleDeleteBtnClick(){}
