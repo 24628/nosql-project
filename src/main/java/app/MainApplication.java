@@ -18,6 +18,7 @@ public class MainApplication extends Application {
 
         //new Migrator();
         //Migrator.migrationsToRun();
+
         // open the main window
         MainWindow mw = new MainWindow();
         mw.getStage().show();

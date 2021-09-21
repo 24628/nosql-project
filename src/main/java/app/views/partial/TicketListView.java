@@ -3,6 +3,7 @@ package app.views.partial;
 import app.model.BaseModel;
 import app.model.Ticket;
 import app.views.BaseListView;
+import app.views.CRUD_Ticket;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
@@ -51,16 +52,12 @@ public class TicketListView extends BaseListView {
         }
     }
 
-    protected void handleCreateBtnClick() {
-        System.out.println("handle create");
-    }
-
+    protected void handleCreateBtnClick() { new CRUD_Ticket().getStage().show(); }
     protected void handleEditBtnClick() {
-        System.out.println("handle edit");
+        new CRUD_Ticket().getStage().show();
     }
-
     protected void handleDeleteBtnClick() {
-        System.out.println("handle delete");
+        new CRUD_Ticket().getStage().show();
     }
 
 }

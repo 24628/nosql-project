@@ -2,9 +2,6 @@ package app.views;
 
 import app.database.Database;
 import app.model.BaseModel;
-import app.views.partial.UserListView;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -48,7 +45,7 @@ public class BaseListView extends VBox {
     }
 
     protected void generateTable(){
-        this.table = new TableView<>();;
+        this.table = new TableView<>();
         this.table.setEditable(true);
         this.table.getSelectionModel().setCellSelectionEnabled(true);
         this.table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);

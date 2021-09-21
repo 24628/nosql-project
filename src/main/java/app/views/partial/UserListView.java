@@ -5,6 +5,7 @@ import app.model.BaseModel;
 import app.model.Ticket;
 import app.model.User;
 import app.views.BaseListView;
+import app.views.CRUD_User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -27,7 +28,7 @@ public class UserListView extends BaseListView {
 
         Label heading = this.addHeaders("Users");
 
-        String[] columnNames = {"First Name", "Last Name", "Email", "Phone number", "Created_at", "Updated_at"};
+        String[] columnNames = {"firstName", "lastName", "email", "phoneNumber", "Created_at", "Updated_at"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
@@ -56,16 +57,12 @@ public class UserListView extends BaseListView {
         }
     }
 
-    protected void handleCreateBtnClick() {
-        System.out.println("handle create");
-    }
-
+    protected void handleCreateBtnClick() {new CRUD_User().getStage().show();}
     protected void handleEditBtnClick() {
-        System.out.println("handle edit");
+        new CRUD_User().getStage().show();
     }
-
     protected void handleDeleteBtnClick() {
-        System.out.println("handle delete");
+        new CRUD_User().getStage().show();
     }
 }
 
