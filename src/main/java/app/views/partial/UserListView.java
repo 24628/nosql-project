@@ -57,12 +57,8 @@ public class UserListView extends BaseListView {
         }
     }
 
-    protected void handleCreateBtnClick() {new CRUD_User().getStage().show();}
-    protected void handleEditBtnClick() {
-        new CRUD_User().getStage().show();
-    }
-    protected void handleDeleteBtnClick() {
-        new CRUD_User().getStage().show();
-    }
+    protected void handleCreateBtnClick() {}
+    protected void handleEditBtnClick() {}
+    protected void handleDeleteBtnClick() {}
 }
 

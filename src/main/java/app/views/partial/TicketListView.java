@@ -52,12 +52,12 @@ public class TicketListView extends BaseListView {
         }
     }
 
-    protected void handleCreateBtnClick() { new CRUD_Ticket().getStage().show(); }
+    protected void handleCreateBtnClick() {  }
     protected void handleEditBtnClick() {
-        new CRUD_Ticket().getStage().show();
+
     }
     protected void handleDeleteBtnClick() {
-        new CRUD_Ticket().getStage().show();
+
     }
 
 }
