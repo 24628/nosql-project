@@ -7,11 +7,11 @@ public class User extends BaseModel{
     protected String firstName;
     protected String lastName;
     protected String email;
-    protected Float phoneNumber;
+    protected String phoneNumber;
     protected Date created_at;
     protected Date updated_at;
 
-    public User(String firstName, String lastName, String email, Float phoneNumber, Date created_at, Date updated_at) {
+    public User(String firstName, String lastName, String email, String phoneNumber, Date created_at, Date updated_at) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -44,11 +44,11 @@ public class User extends BaseModel{
         this.email = email;
     }
 
-    public Float getPhoneNumber() {
+    public String getPhoneNumber() {
         return phoneNumber;
     }
 
-    public void setPhoneNumber(Float phoneNumber) {
+    public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
 

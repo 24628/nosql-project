@@ -38,7 +38,7 @@ public class UserListView extends BaseListView {
                         doc.get("firstName").toString(),
                         doc.get("lastName").toString(),
                         doc.get("email").toString(),
-                        Float.parseFloat(doc.get("phonenumber").toString()),
+                        doc.get("phonenumber").toString(),
                         dateFormat.parse(doc.get("created_at").toString()),
                         dateFormat.parse(doc.get("updated_at").toString())
                 ));
