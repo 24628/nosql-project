@@ -1,7 +1,6 @@
 package app;
 
-import app.database.migrations.Migrator;
-import app.views.MainWindow;
+import app.views.windows.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
 

@@ -1,5 +1,6 @@
-package app.views;
+package app.views.windows;
 
+import app.views.BaseView;
 import app.views.partial.TicketListView;
 import app.views.partial.UserListView;
 import javafx.geometry.Insets;
@@ -8,7 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 
-public class MainWindow extends BaseView{
+public class MainWindow extends BaseView {
 
     public MainWindow() {
 

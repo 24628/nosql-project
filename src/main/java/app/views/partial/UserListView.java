@@ -1,19 +1,12 @@
 package app.views.partial;
 
-import app.database.Database;
 import app.model.BaseModel;
-import app.model.Ticket;
 import app.model.User;
 import app.views.BaseListView;
-import app.views.CRUD_User;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import org.bson.Document;
 
 import java.text.ParseException;

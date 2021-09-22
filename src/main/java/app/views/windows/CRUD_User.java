@@ -1,11 +1,12 @@
-package app.views;
+package app.views.windows;
 
+import app.views.BaseView;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class CRUD_User extends BaseView{
+public class CRUD_User extends BaseView {
 
     public CRUD_User() {
         // Add the menu and the view. Default view will be the student list view
