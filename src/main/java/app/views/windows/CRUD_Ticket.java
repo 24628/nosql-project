@@ -67,11 +67,13 @@ public class CRUD_Ticket extends BaseView {
             }
 
             if(item instanceof ComboBox){
-                System.out.println("i hope i dont fire on datpicker");
+                final ComboBox parsedComboBox = (ComboBox) item;
+                System.out.println(parsedComboBox.getValue());
             }
 
             if(item instanceof DatePicker){
-                System.out.println("IM A DATE PICKER WOHO");
+                final DatePicker parsedComboBox = (DatePicker) item;
+                System.out.println(parsedComboBox.getValue());
             }
         }
     }
