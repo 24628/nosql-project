@@ -1,12 +1,10 @@
 package app.views;
 
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.control.*;
+import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -20,6 +18,8 @@ public class BaseView {
     public Stage getStage() {
         return stage;
     }
+
+    protected GridPane form = this.createGrid();
 
     public BaseView() {
 
@@ -62,11 +62,80 @@ public class BaseView {
         layout.getChildren().addAll(container);
     }
 
-    private ComboBox generateComboBox(String name){
-        return null;
+    protected GridPane createGrid(){
+        // Instantiate a new Grid Pane
+        GridPane gridPane = new GridPane();
+
+        // Position the pane at the center of the screen, both vertically and horizontally
+        gridPane.setAlignment(Pos.CENTER);
+
+        // Set a padding of 20px on each side
+        gridPane.setPadding(new Insets(40, 80, 40, 40));
+
+        // Set the horizontal gap between columns
+        gridPane.setHgap(10);
+
+        // Set the vertical gap between rows
+        gridPane.setVgap(10);
+
+        // Add Column Constraints
+
+        // columnOneConstraints will be applied to all the nodes placed in column one.
+        ColumnConstraints columnOneConstraints = new ColumnConstraints(150, 150, Double.MAX_VALUE);
+        columnOneConstraints.setHalignment(HPos.RIGHT);
+
+        // columnTwoConstraints will be applied to all the nodes placed in column two.
+        ColumnConstraints columnTwoConstrains = new ColumnConstraints(150,150, Double.MAX_VALUE);
+        columnTwoConstrains.setHgrow(Priority.ALWAYS);
+
+        gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
+
+        return gridPane;
     }
 
-    private TextField generateComboBox(){
-        return null;
+
+    protected DatePicker generateDatePicker(String title, int placement){
+        Label label = new Label(title);
+        this.form.add(label, 0,placement);
+
+        DatePicker date = new DatePicker();
+        date.setPrefHeight(20);
+        this.form.add(date, 1, placement);
+
+        return date;
+    }
+
+    protected ComboBox<String> generateComboBox(String title, String[] comboBoxItems, int placement){
+        Label label = new Label(title);
+        this.form.add(label, 0, placement);
+
+        ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.getItems().addAll(comboBoxItems);
+        this.form.add(comboBox, 1, placement);
+
+        return comboBox;
+    }
+
+    protected TextField generateTextField(String title, int placement){
+        Label label = new Label(title);
+        this.form.add(label, 0, placement);
+
+        // Add description Field
+        TextField field = new TextField();
+        field.setPrefHeight(20);
+        this.form.add(field, 1, placement);
+
+        return field;
+    }
+
+    protected Button generateFormBtn(String btnTitle, int placement){
+        Button btn = new Button(btnTitle);
+        btn.setPrefHeight(40);
+        btn.setDefaultButton(true);
+        btn.setPrefWidth(100);
+        this.form.add(btn, placement, 8, 2, 1);
+        GridPane.setMargin(btn, new Insets(20, 0,20,0));
+
+        return btn;
     }
 }
