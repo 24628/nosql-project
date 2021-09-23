@@ -1,7 +1,8 @@
 package app.views.windows;
 
-import app.model.BaseModel;
-import app.views.BaseView;
+import app.database.Database;
+import app.model.Ticket;
+import app.views.BaseForm;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,10 +10,19 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import org.bson.Document;
 
-public class CRUD_Ticket extends BaseView {
+import java.util.ArrayList;
+import java.util.List;
 
-    public CRUD_Ticket() {
+public class Form_Ticket extends BaseForm {
+
+    private Database db;
+
+    public Form_Ticket() {
+        // db conn
+        //db = new Database("ProjectNoSQL");
+        db = new Database("noSql");
 
         // --CRUD FORM-- //
         this.addUIControls(this.form);
@@ -21,12 +31,11 @@ public class CRUD_Ticket extends BaseView {
         layout.getChildren().addAll(this.form);
 
         // Create the main scene.
-        // Scene mainScene = new StyledScene(layout);
-        Scene crud_Ticket = new Scene(layout);
+        Scene form_Ticket = new Scene(layout);
 
         // Let's go!
-        stage.setTitle("CRUD Ticket");
-        stage.setScene(crud_Ticket);
+        stage.setTitle("Form Ticket");
+        stage.setScene(form_Ticket);
     }
 
     protected void addUIControls(GridPane gridPane) {
@@ -59,22 +68,38 @@ public class CRUD_Ticket extends BaseView {
 
     protected void handleSubmitBtnClick(Control[] formItems){
         System.out.println("Handle Submit!");
+        List<String> data = new ArrayList<String>();
 
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
-                System.out.println(parsedTextField.getText());
+                data.add(parsedTextField.getText());
             }
 
             if(item instanceof ComboBox){
                 final ComboBox parsedComboBox = (ComboBox) item;
-                System.out.println(parsedComboBox.getValue());
+                data.add(parsedComboBox.getValue().toString());
             }
 
             if(item instanceof DatePicker){
-                final DatePicker parsedComboBox = (DatePicker) item;
-                System.out.println(parsedComboBox.getValue());
+                final DatePicker parsedDatePicker = (DatePicker) item;
+                data.add(parsedDatePicker.getValue().toString());
             }
         }
+        db.insertOne(generateDocument(data), "Tickets");
+    }
+
+    private Document generateDocument(List<String> data){
+        // new document and all column names
+        Document document = new Document();
+        String[] columnNames = {"Reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+
+        // create document
+        for (int i = 0; i < data.size(); i++) {
+            document.append(columnNames[i], data.get(i));
+        }
+
+        // return document
+        return document;
     }
 }

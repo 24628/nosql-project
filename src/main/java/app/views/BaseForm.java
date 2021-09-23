@@ -8,7 +8,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
-public class BaseView {
+public class BaseForm {
 
     protected Stage stage;
     protected VBox layout;
@@ -21,7 +21,7 @@ public class BaseView {
 
     protected GridPane form = this.createGrid();
 
-    public BaseView() {
+    public BaseForm() {
 
         // create a new Stage (window)
         stage = new Stage();
@@ -100,6 +100,7 @@ public class BaseView {
 
         DatePicker date = new DatePicker();
         date.setPrefHeight(20);
+        date.setPrefWidth(400);
         this.form.add(date, 1, placement);
 
         return date;
@@ -110,6 +111,7 @@ public class BaseView {
         this.form.add(label, 0, placement);
 
         ComboBox<String> comboBox = new ComboBox<>();
+        comboBox.setPrefWidth(400);
         comboBox.getItems().addAll(comboBoxItems);
         this.form.add(comboBox, 1, placement);
 
@@ -123,6 +125,8 @@ public class BaseView {
         // Add description Field
         TextField field = new TextField();
         field.setPrefHeight(20);
+        field.setPrefWidth(400);
+        field.setMaxWidth(400);
         this.form.add(field, 1, placement);
 
         return field;

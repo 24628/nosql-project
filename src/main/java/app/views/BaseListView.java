@@ -16,6 +16,9 @@ public class BaseListView extends VBox {
     public BaseListView(){
         db = new Database("noSql");
     }
+//    public BaseListView(){
+//        db = new Database("ProjectNoSQL");
+//    }
 
     protected Label addHeaders(String headerName){
         this.setPadding(new Insets(20));
