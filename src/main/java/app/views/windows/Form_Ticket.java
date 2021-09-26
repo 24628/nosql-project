@@ -12,8 +12,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.bson.Document;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 public class Form_Ticket extends BaseForm {
 
@@ -101,5 +107,40 @@ public class Form_Ticket extends BaseForm {
 
         // return document
         return document;
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // work in progress, when a ticket is selected and the button "Edit" is pressed,
+    // the form_ticket should open with all the fields already filled in....
+    protected void fillTicketData(Control[] formItems, Ticket t) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        String[] ticketData = t.getTicketArray();
+        int index = 0;
+
+        for (Control item : formItems) {
+            if(item instanceof TextField){
+                ((TextField) item).setText(ticketData[index]);
+            }
+
+            if(item instanceof ComboBox){
+
+            }
+
+            if(item instanceof DatePicker){
+                ((DatePicker) item).setValue(LocalDate.parse(ticketData[index]));
+            }
+            index++;
+        }
     }
 }
