@@ -3,6 +3,7 @@ package app.views.windows;
 import app.database.Database;
 import app.model.Ticket;
 import app.views.BaseForm;
+import com.mongodb.client.model.Filters;
 import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
@@ -12,6 +13,7 @@ import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.bson.Document;
+import org.bson.conversions.Bson;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -27,13 +29,13 @@ public class Form_Ticket extends BaseForm {
 
     private Database db;
 
-    public Form_Ticket() {
+    public Form_Ticket(Ticket ticket) {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
 
         // --CRUD FORM-- //
-        this.addUIControls(this.form);
+        this.addUIControls(this.form, ticket);
 
         // Add the menu and the view. Default view will be the student list view
         layout.getChildren().addAll(this.form);
@@ -46,7 +48,7 @@ public class Form_Ticket extends BaseForm {
         stage.setScene(form_Ticket);
     }
 
-    protected void addUIControls(GridPane gridPane) {
+    protected void addUIControls(GridPane gridPane, Ticket ticket) {
         // Add Header
         Label headerLabel = new Label("Create Ticket");
         headerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
@@ -68,13 +70,21 @@ public class Form_Ticket extends BaseForm {
                 this.generateTextField("Description: ", 7),
         };
 
+        if (ticket != null) {
+            try {
+                fillTicketData(formItems, ticket);
+            } catch (ParseException e) {
+                System.out.println(e);
+            }
+        }
+
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
 
-        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems));
+        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket));
     }
 
-    protected void handleSubmitBtnClick(Control[] formItems){
+    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket){
         System.out.println("Handle Submit!");
         List<String> data = new ArrayList<String>();
 
@@ -94,7 +104,12 @@ public class Form_Ticket extends BaseForm {
                 data.add(parsedDatePicker.getValue().toString());
             }
         }
-        db.insertOne(generateDocument(data), "Tickets");
+        if (ticket == null)
+            db.insertOne(generateDocument(data), "Tickets");
+        else{
+            Bson filter = Filters.eq("incident", ticket.getIncident());
+            db.updateOne(filter, generateDocument(data), "Tickets");
+        }
     }
 
     private Document generateDocument(List<String> data){
@@ -111,23 +126,10 @@ public class Form_Ticket extends BaseForm {
         return document;
     }
 
-
-
-
-
-
-
-
-
-
-
-
-
     // work in progress, when a ticket is selected and the button "Edit" is pressed,
     // the form_ticket should open with all the fields already filled in....
     protected void fillTicketData(Control[] formItems, Ticket t) throws ParseException {
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String[] ticketData = t.getTicketArray();
         int index = 0;
 
@@ -141,7 +143,7 @@ public class Form_Ticket extends BaseForm {
             }
 
             if(item instanceof DatePicker){
-                ((DatePicker) item).setValue(LocalDate.parse(ticketData[index]));
+                ((DatePicker) item).setValue(LocalDate.parse(ticketData[index], formatter));
             }
             index++;
         }
@@ -150,7 +152,7 @@ public class Form_Ticket extends BaseForm {
     private int getCMBIndex(ComboBox<String> box, String value){
         int index = 0;
         for (String s:box.getItems()) {
-            if (s == value)
+            if (s.equalsIgnoreCase(value))
                 break;
             index++;
         }

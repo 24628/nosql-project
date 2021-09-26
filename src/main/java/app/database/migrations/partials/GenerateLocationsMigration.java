@@ -14,7 +14,8 @@ public class GenerateLocationsMigration extends Migrator {
 
     public GenerateLocationsMigration(){
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
 
         Document document1 = new Document("location", "Amsterdam")

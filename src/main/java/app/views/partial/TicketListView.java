@@ -61,13 +61,13 @@ public class TicketListView extends BaseListView {
 
     // open empty form to add a ticket
     protected void handleCreateBtnClick() {
-        new Form_Ticket().getStage().show();
+        new Form_Ticket(null).getStage().show();
     }
 
     // when there is an item selected, create form with all ticket properties filled
     protected void handleEditBtnClick() {
         if (table.getSelectionModel().getSelectedItem() != null)
-            new Form_Ticket();
+            new Form_Ticket((Ticket) table.getSelectionModel().getSelectedItem()).getStage().show();
     }
 
     protected void handleDeleteBtnClick() {
