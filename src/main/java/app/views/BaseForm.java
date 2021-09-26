@@ -110,7 +110,7 @@ public class BaseForm {
         Label label = new Label(title);
         this.form.add(label, 0, placement);
 
-        ComboBox<String> comboBox = new ComboBox<>();
+        ComboBox<String> comboBox = new ComboBox<String>();
         comboBox.setPrefWidth(400);
         comboBox.getItems().addAll(comboBoxItems);
         this.form.add(comboBox, 1, placement);

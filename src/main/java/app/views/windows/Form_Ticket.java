@@ -3,6 +3,7 @@ package app.views.windows;
 import app.database.Database;
 import app.model.Ticket;
 import app.views.BaseForm;
+import javafx.collections.ObservableList;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -16,6 +17,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -124,7 +126,8 @@ public class Form_Ticket extends BaseForm {
     // work in progress, when a ticket is selected and the button "Edit" is pressed,
     // the form_ticket should open with all the fields already filled in....
     protected void fillTicketData(Control[] formItems, Ticket t) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         String[] ticketData = t.getTicketArray();
         int index = 0;
 
@@ -134,7 +137,7 @@ public class Form_Ticket extends BaseForm {
             }
 
             if(item instanceof ComboBox){
-
+                ((ComboBox<?>) item).getSelectionModel().select(getCMBIndex((ComboBox<String>) item, ticketData[index]));
             }
 
             if(item instanceof DatePicker){
@@ -142,5 +145,15 @@ public class Form_Ticket extends BaseForm {
             }
             index++;
         }
+    }
+
+    private int getCMBIndex(ComboBox<String> box, String value){
+        int index = 0;
+        for (String s:box.getItems()) {
+            if (s == value)
+                break;
+            index++;
+        }
+        return index;
     }
 }
