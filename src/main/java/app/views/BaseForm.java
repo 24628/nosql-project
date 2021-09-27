@@ -22,15 +22,20 @@ public class BaseForm {
     protected GridPane form = this.createGrid();
 
     public BaseForm() {
-
         // create a new Stage (window)
         stage = new Stage();
 
         // set up the global layout, menu on the left, sub scene on the right
          layout = new VBox();
 
-
         // --MENU-- //
+        VBox nav_bar = this.createNavBar();
+
+        // add menu to layout
+        layout.getChildren().addAll(nav_bar);
+    }
+
+    private VBox createNavBar(){
         VBox container = new VBox();
         HBox nav_bar = new HBox();
 
@@ -58,8 +63,7 @@ public class BaseForm {
         nav_bar.getChildren().addAll(dashboardButton, ticketButton, userButton);
         container.setAlignment(Pos.BOTTOM_RIGHT);
         container.getChildren().addAll(title, description, nav_bar);
-
-        layout.getChildren().addAll(container);
+        return container;
     }
 
     protected GridPane createGrid(){
@@ -78,8 +82,6 @@ public class BaseForm {
         // Set the vertical gap between rows
         gridPane.setVgap(10);
 
-        // Add Column Constraints
-
         // columnOneConstraints will be applied to all the nodes placed in column one.
         ColumnConstraints columnOneConstraints = new ColumnConstraints(150, 150, Double.MAX_VALUE);
         columnOneConstraints.setHalignment(HPos.RIGHT);
@@ -88,6 +90,7 @@ public class BaseForm {
         ColumnConstraints columnTwoConstrains = new ColumnConstraints(150,150, Double.MAX_VALUE);
         columnTwoConstrains.setHgrow(Priority.ALWAYS);
 
+        // Add Column Constraints
         gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
 
         return gridPane;

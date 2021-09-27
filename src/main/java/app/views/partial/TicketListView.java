@@ -4,6 +4,7 @@ import app.model.BaseModel;
 import app.model.Ticket;
 import app.views.BaseListView;
 import app.views.windows.Form_Ticket;
+import app.views.windows.MainWindow;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -19,7 +20,11 @@ import java.text.SimpleDateFormat;
 
 public class TicketListView extends BaseListView {
 
-    public TicketListView() {
+    private MainWindow mainWindow;
+
+    public TicketListView(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+
         this.generateTable();
 
         this.fillTableWithData();
@@ -62,12 +67,15 @@ public class TicketListView extends BaseListView {
     // open empty form to add a ticket
     protected void handleCreateBtnClick() {
         new Form_Ticket(null).getStage().show();
+        this.mainWindow.getStage().close();
     }
 
     // when there is an item selected, create form with all ticket properties filled
     protected void handleEditBtnClick() {
-        if (table.getSelectionModel().getSelectedItem() != null)
+        if (table.getSelectionModel().getSelectedItem() != null) {
             new Form_Ticket((Ticket) table.getSelectionModel().getSelectedItem()).getStage().show();
+            this.mainWindow.getStage().close();
+        }
     }
 
     protected void handleDeleteBtnClick() {

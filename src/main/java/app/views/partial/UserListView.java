@@ -3,6 +3,7 @@ package app.views.partial;
 import app.model.BaseModel;
 import app.model.User;
 import app.views.BaseListView;
+import app.views.windows.MainWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -14,7 +15,11 @@ import java.text.SimpleDateFormat;
 
 public class UserListView extends BaseListView {
 
-    public UserListView() {
+    private MainWindow mainWindow;
+
+    public UserListView(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+
         this.generateTable();
 
         this.fillTableWithData();

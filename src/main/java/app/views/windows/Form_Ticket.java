@@ -1,14 +1,11 @@
 package app.views.windows;
 
 import app.database.Database;
+import app.helpers.helperMethods;
 import app.model.Ticket;
 import app.views.BaseForm;
-import app.views.partial.DashboardView;
-import app.views.partial.TicketListView;
-import app.views.partial.UserListView;
 import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -28,6 +25,7 @@ public class Form_Ticket extends BaseForm {
 
     // db
     private Database db;
+    private helperMethods helper;
 
     // all form items
     private DatePicker reported;
@@ -47,16 +45,10 @@ public class Form_Ticket extends BaseForm {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
-
-        // --BUTTON EVENTS-- //
-        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
-        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
-        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        helper = new helperMethods();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, ticket);
-
-        // Add the menu and the view. Default view will be the student list view
         layout.getChildren().addAll(this.form);
 
         // Create the main scene.
@@ -65,6 +57,11 @@ public class Form_Ticket extends BaseForm {
         // Let's go!
         stage.setTitle("Form Ticket");
         stage.setScene(form_Ticket);
+
+        // --BUTTON EVENTS-- //
+        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
     }
 
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
@@ -109,13 +106,13 @@ public class Form_Ticket extends BaseForm {
         incident.setText(ticket.getIncident());
 
         type = this.generateComboBox("Type of incident:", comboBoxTypes, 3);
-        type.getSelectionModel().select(getCMBIndex((ComboBox<String>) type, ticket.getType()));
+        type.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) type, ticket.getType()));
 
         user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
-        user.getSelectionModel().select(getCMBIndex((ComboBox<String>) user, ticket.getUser_id()));
+        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser_id()));
 
         priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
-        priority.getSelectionModel().select(getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
+        priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
 
         deadline = this.generateDatePicker("Deadline/follow up: ", 6);
         deadline.setValue(ticket.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -131,6 +128,7 @@ public class Form_Ticket extends BaseForm {
         System.out.println("Handle Submit!");
         List<String> data = new ArrayList<String>();
 
+        // foreach item in control items, add value to data list
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
@@ -146,40 +144,17 @@ public class Form_Ticket extends BaseForm {
             }
         }
 
+        // generate BSON document
+        String[] columnNames = {"Reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+        Document document = helper.generateDocument(data, columnNames);
+
+        // if ticket null, insert new one, otherwise update
         if (ticket == null)
-            db.insertOne(generateDocument(data), "Tickets");
+            db.insertOne(document, "Tickets");
         else{
             Bson filter = Filters.eq("incident", ticket.getIncident());
-            db.replaceOne(filter, generateDocument(data), "Tickets");
+            db.replaceOne(filter, document, "Tickets");
         }
-    }
-
-
-
-
-    // helper methods
-    private Document generateDocument(List<String> data){
-        // new document and all column names
-        Document document = new Document();
-        String[] columnNames = {"Reported", "incident", "type", "user_id", "priority", "deadline", "description"};
-
-        // create document
-        for (int i = 0; i < data.size(); i++) {
-            document.append(columnNames[i], data.get(i));
-        }
-
-        // return document
-        return document;
-    }
-
-    private int getCMBIndex(ComboBox<String> box, String value){
-        int index = 0;
-        for (String s:box.getItems()) {
-            if (s.equalsIgnoreCase(value))
-                break;
-            index++;
-        }
-        return index;
     }
 
     private void openMainAndClose(ActionEvent actionEvent){
