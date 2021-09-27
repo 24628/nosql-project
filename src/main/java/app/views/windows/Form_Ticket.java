@@ -3,29 +3,26 @@ package app.views.windows;
 import app.database.Database;
 import app.model.Ticket;
 import app.views.BaseForm;
+import app.views.partial.DashboardView;
+import app.views.partial.TicketListView;
+import app.views.partial.UserListView;
 import com.mongodb.client.model.Filters;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
+import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class Form_Ticket extends BaseForm {
 
@@ -50,6 +47,11 @@ public class Form_Ticket extends BaseForm {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
+
+        // --BUTTON EVENTS-- //
+        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, ticket);
@@ -154,7 +156,7 @@ public class Form_Ticket extends BaseForm {
 
 
 
-    
+
     // helper methods
     private Document generateDocument(List<String> data){
         // new document and all column names
@@ -178,5 +180,10 @@ public class Form_Ticket extends BaseForm {
             index++;
         }
         return index;
+    }
+
+    private void openMainAndClose(ActionEvent actionEvent){
+        new MainWindow().getStage().show();
+        ((Stage)(((Button)actionEvent.getSource()).getScene().getWindow())).close();
     }
 }
