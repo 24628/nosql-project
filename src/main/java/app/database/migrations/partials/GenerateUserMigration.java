@@ -15,7 +15,8 @@ public class GenerateUserMigration extends Migrator {
 
     public GenerateUserMigration(){
 
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
 
         Document serviceDeskEmployee = new Document("firstName", "Jan")

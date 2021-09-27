@@ -4,9 +4,10 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.control.cell.PropertyValueFactory;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Ticket {
+public class Ticket extends BaseModel{
 
     private Date reported;
     private String incident;
@@ -85,4 +86,12 @@ public class Ticket {
     public void setDeadline(Date deadline) {
         this.deadline = deadline;
     }
+
+    public String[] getTicketArray(){
+        //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        String[] array = {formatter.format(reported), incident, type, user_id, priority, formatter.format(deadline), description};
+        return array;
+    }
 }
+

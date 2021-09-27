@@ -2,6 +2,7 @@ package app.database.migrations;
 
 import app.database.Database;
 import app.database.migrations.partials.GenerateLocationsMigration;
+import app.database.migrations.partials.GenerateTicketMigration;
 import app.database.migrations.partials.GenerateUserMigration;
 
 public class Migrator {
@@ -17,5 +18,6 @@ public class Migrator {
     public static void migrationsToRun() {
         new GenerateLocationsMigration();
         new GenerateUserMigration();
+        new GenerateTicketMigration();
     }
 }
