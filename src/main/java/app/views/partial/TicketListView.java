@@ -5,6 +5,7 @@ import app.model.Ticket;
 import app.views.BaseListView;
 import app.views.windows.Form_Ticket;
 import app.views.windows.MainWindow;
+import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,6 +19,7 @@ import org.bson.conversions.Bson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 
 public class TicketListView extends BaseListView {
 
@@ -25,30 +27,34 @@ public class TicketListView extends BaseListView {
 
     public TicketListView(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
-
         this.generateTable();
+        this.fillTableWithData(Filters.regex("incident", ".*", "i"));
 
-        this.fillTableWithData();
-
+        // header title and search box
         Label heading = this.addHeaders("Tickets");
-
         TextField filterTable = new TextField();
         filterTable.setMaxWidth(200);
         filterTable.setPromptText("Enter something...");
+        filterTable.textProperty().addListener((observable, oldValue, newValue) -> {
+            Bson filter = Filters.regex("incident", ".*" + newValue + ".*", "i");
+            table.getItems().clear();
+            fillTableWithData(filter);
+        }); // add listener to text field property, when changed, adjust tableview data on filter
 
+        //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
 
-        getChildren().addAll(heading, filterTable, table, menu);
+        getChildren().addAll(heading, filterTable, table, menu); // add all
     }
 
-    protected void fillTableWithData() {
+    protected void fillTableWithData(Bson filter) {
         ObservableList<Ticket> tableList = FXCollections.observableArrayList();
         //SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        for (Document doc : db.findAll("Tickets")) {
+        for (Document doc : db.findMany(filter, "Tickets")) {
             try {
                 tableList.add(new Ticket(
                         dateFormat.parse(doc.get("Reported").toString()),
@@ -63,7 +69,6 @@ public class TicketListView extends BaseListView {
                 System.out.println(e.toString());
             }
         }
-
         for (BaseModel item : tableList) {
             table.getItems().add(item);
         }
@@ -85,12 +90,13 @@ public class TicketListView extends BaseListView {
 
     protected void handleDeleteBtnClick() {
         if (table.getSelectionModel().getSelectedItem() != null) {
-
+            // alert user about his action
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Delete item");
             alert.setHeaderText("Item is about to be deleted");
             alert.setContentText("Are you sure you want to delete this item?");
 
+            // delete when button ok is pressed
             alert.showAndWait().ifPresent(rs -> {
                 if (rs == ButtonType.OK) {
                     Ticket t = (Ticket) table.getSelectionModel().getSelectedItem();
@@ -100,5 +106,4 @@ public class TicketListView extends BaseListView {
             });
         }
     }
-
 }
