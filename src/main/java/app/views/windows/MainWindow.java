@@ -27,4 +27,11 @@ public class MainWindow extends BaseForm {
         stage.setHeight(600);
         stage.setScene(mainScene);
     }
+
+    public void setTableView(String option){
+        if (option.equalsIgnoreCase("Ticket"))
+            layout.getChildren().set(1, new TicketListView(this));
+        if (option.equalsIgnoreCase("User"))
+            layout.getChildren().set(1, new UserListView(this));
+    }
 }

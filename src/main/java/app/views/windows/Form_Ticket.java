@@ -4,6 +4,8 @@ import app.database.Database;
 import app.helpers.helperMethods;
 import app.model.Ticket;
 import app.views.BaseForm;
+import app.views.partial.TicketListView;
+import app.views.partial.UserListView;
 import com.mongodb.client.model.Filters;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -59,9 +61,9 @@ public class Form_Ticket extends BaseForm {
         stage.setScene(form_Ticket);
 
         // --BUTTON EVENTS-- //
-        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
-        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
-        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
+        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
+        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
 
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
@@ -83,7 +85,7 @@ public class Form_Ticket extends BaseForm {
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
 
         submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket));
-        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
+        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
     }
 
     private Control[] createFormItems(){
@@ -158,8 +160,12 @@ public class Form_Ticket extends BaseForm {
         }
     }
 
-    private void openMainAndClose(ActionEvent actionEvent){
-        new MainWindow().getStage().show();
+    private void openMainAndClose(ActionEvent actionEvent, String option){
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setTableView(option);
+        mainWindow.getStage().show();
+
+        // close this window
         ((Stage)(((Button)actionEvent.getSource()).getScene().getWindow())).close();
     }
 }
