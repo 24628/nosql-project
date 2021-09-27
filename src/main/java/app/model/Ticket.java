@@ -1,9 +1,5 @@
 package app.model;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
