@@ -7,6 +7,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class BaseListView extends VBox {
 
@@ -24,6 +26,7 @@ public class BaseListView extends VBox {
         this.setPadding(new Insets(20));
 
         Label heading = new Label();
+        heading.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         heading.setText(headerName);
         heading.getStyleClass().add("header");
 

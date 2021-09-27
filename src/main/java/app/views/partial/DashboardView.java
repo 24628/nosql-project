@@ -2,6 +2,7 @@ package app.views.partial;
 
 import app.views.BaseListView;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -23,6 +24,7 @@ public class DashboardView extends BaseListView {
         Label dashboard_Title = new Label("Current incidents");
 
         dashboard_Header.setSpacing(325);
+        dashboard_Header.setAlignment(Pos.CENTER);
         dashboard_Title.setFont(Font.font("Verdana", 30));
         show_List.setMinWidth(150);
         dashboard_Header.getChildren().addAll(dashboard_Title, show_List);

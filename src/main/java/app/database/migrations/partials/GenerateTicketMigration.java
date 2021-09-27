@@ -18,28 +18,28 @@ public class GenerateTicketMigration extends Migrator {
         Date date = new Date(System.currentTimeMillis());
 
         Document document1 = new Document("Reported", formatter.format(date))
-                .append("incident", "incident1")
-                .append("type", "hardware")
+                .append("incident", "Flammable laptop.")
+                .append("type", "Hardware")
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "this is a description");
+                .append("description", "Laptop went up in flames.");
 
         Document document2 = new Document("Reported", formatter.format(date))
-                .append("incident", "incident2")
-                .append("type", "software")
+                .append("incident", "Software problem.")
+                .append("type", "Software")
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "this is a description");
+                .append("description", "System 32 was erased.");
 
         Document document3 = new Document("Reported", formatter.format(date))
-                .append("incident", "incident3")
-                .append("type", "wifi")
+                .append("incident", "Sandwich stolen.")
+                .append("type", "Service")
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "this is a description");
+                .append("description", "Ross's turkey sandwich was stolen");
 
         List<Document> tickets = new ArrayList<>();
         tickets.add(document1);

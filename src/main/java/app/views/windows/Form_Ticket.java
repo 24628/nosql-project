@@ -23,7 +23,7 @@ import java.util.List;
 
 public class Form_Ticket extends BaseForm {
 
-    // db
+    // db, helpers and main window
     private Database db;
     private helperMethods helper;
 
@@ -37,7 +37,7 @@ public class Form_Ticket extends BaseForm {
     private TextField description;
 
     // cmb values
-    private String[] comboBoxTypes = {"Choice1", "choice2", "choice3"};
+    private String[] comboBoxTypes = {"Hardware", "Software", "Service"};
     private String[] comboBoxUserNames = {"Bram", "Koen", "Noor"};
     private String[] comboBoxPriorityNames = {"LOW", "MEDIUM", "HIGH"};
 
@@ -83,6 +83,7 @@ public class Form_Ticket extends BaseForm {
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
 
         submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket));
+        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent));
     }
 
     private Control[] createFormItems(){

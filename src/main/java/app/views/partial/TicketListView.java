@@ -11,6 +11,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -31,12 +32,16 @@ public class TicketListView extends BaseListView {
 
         Label heading = this.addHeaders("Tickets");
 
+        TextField filterTable = new TextField();
+        filterTable.setMaxWidth(200);
+        filterTable.setPromptText("Enter something...");
+
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
 
-        getChildren().addAll(heading, table, menu);
+        getChildren().addAll(heading, filterTable, table, menu);
     }
 
     protected void fillTableWithData() {

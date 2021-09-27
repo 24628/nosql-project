@@ -23,6 +23,8 @@ public class MainWindow extends BaseForm {
 
         // Let's go!
         stage.setTitle("NoDesk");
+        stage.setWidth(1200);
+        stage.setHeight(600);
         stage.setScene(mainScene);
     }
 }

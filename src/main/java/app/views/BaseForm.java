@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
@@ -37,32 +38,34 @@ public class BaseForm {
 
     private VBox createNavBar(){
         VBox container = new VBox();
+        VBox header = new VBox();
         HBox nav_bar = new HBox();
-
-        container.setStyle("-fx-padding: 0;" +
-                "-fx-border-style: solid inside;" +
-                "-fx-border-width: 2;" +
-                "-fx-border-insets: 1;" +
-                "-fx-border-radius: 1;" +
-                "-fx-border-color: black;");
 
         // labels for title and description
         Label title = new Label("NoDesk");
         Label description = new Label("Licensed to: The Garden Group");
-        title.setFont(Font.font("Verdana", 20));
+        title.setFont(Font.font("Verdana", 30));
+        description.setFont(Font.font("Verdana", 20));
+        header.setAlignment(Pos.TOP_RIGHT);
+        header.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
+        header.getChildren().addAll(title, description);
 
         // buttons
         dashboardButton = new Button("Dashboard");
         userButton = new Button("User");
         ticketButton = new Button("Ticket");
-        dashboardButton.setMinWidth(250);
-        ticketButton.setMinWidth(250);
-        userButton.setMinWidth(250);
+        dashboardButton.setMinWidth(395);
+        dashboardButton.setMinHeight(40);
+        ticketButton.setMinWidth(395);
+        ticketButton.setMinHeight(40);
+        userButton.setMinWidth(395);
+        userButton.setMinHeight(40);
 
         // add all children and set alignment to right
+        nav_bar.setAlignment(Pos.CENTER);
         nav_bar.getChildren().addAll(dashboardButton, ticketButton, userButton);
-        container.setAlignment(Pos.BOTTOM_RIGHT);
-        container.getChildren().addAll(title, description, nav_bar);
+        //container.setAlignment(Pos.CENTER);
+        container.getChildren().addAll(header, nav_bar);
         return container;
     }
 
