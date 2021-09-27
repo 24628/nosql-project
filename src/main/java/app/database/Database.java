@@ -90,4 +90,15 @@ public class Database {
             collection.deleteOne(filterString);
         }
     }
+    /** update one document from the collection
+     * @param filterString to filter the document
+     * @param data Document data you want to replace
+     * @param CollectionName collection you want to update to
+     */
+    public void replaceOne(Bson filterString, Bson data, String CollectionName){
+        if(this.findOne(filterString, CollectionName) != null) {
+            MongoCollection<Document> collection = this.database.getCollection(CollectionName);
+            collection.replaceOne(filterString, (Document) data);
+        }
+    }
 }
