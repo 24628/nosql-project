@@ -1,5 +1,6 @@
 package app.views.windows;
 
+import app.ICallBack;
 import app.database.Database;
 import app.helpers.helperMethods;
 import app.model.Ticket;
@@ -43,6 +44,9 @@ public class Form_Ticket extends BaseForm {
     private String[] comboBoxUserNames = {"Bram", "Koen", "Noor"};
     private String[] comboBoxPriorityNames = {"LOW", "MEDIUM", "HIGH"};
 
+
+
+    // --Constructor
     public Form_Ticket(Ticket ticket) {
         // db conn
         //db = new Database("ProjectNoSQL");
@@ -66,6 +70,10 @@ public class Form_Ticket extends BaseForm {
         dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
 
+
+
+
+    // --Controls of the form
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
         // Add Header
         Label headerLabel = new Label("Create Ticket");
@@ -84,10 +92,25 @@ public class Form_Ticket extends BaseForm {
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
 
-        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket));
+        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket, new ICallBack() {
+            @Override
+            public void onSucces() {
+                System.out.println("data submit succesfull!");
+                openMainAndClose(actionEvent, "Ticket"); // open / refresh tableview
+            }
+
+            @Override
+            public void onError(String err) {
+                System.out.println("data submit not succesfull: " + err);
+            }
+        }));
         cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
     }
 
+
+
+
+    // --create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
                 reported = this.generateDatePicker("Date/time reported: ",1),
@@ -101,6 +124,10 @@ public class Form_Ticket extends BaseForm {
         return formItems;
     }
 
+
+
+
+    // --create form with ticket items filled in
     private Control[] createFormItems(Ticket ticket){
         reported = this.generateDatePicker("Date/time reported: ", 1);
         reported.setValue(ticket.getReported().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
@@ -127,8 +154,11 @@ public class Form_Ticket extends BaseForm {
         return formItems;
     }
 
-    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket){
-        System.out.println("Handle Submit!");
+
+
+
+    // --Submit button event handle
+    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
 
         // foreach item in control items, add value to data list
@@ -152,14 +182,23 @@ public class Form_Ticket extends BaseForm {
         Document document = helper.generateDocument(data, columnNames);
 
         // if ticket null, insert new one, otherwise update
-        if (ticket == null)
-            db.insertOne(document, "Tickets");
-        else{
-            Bson filter = Filters.eq("incident", ticket.getIncident());
-            db.replaceOne(filter, document, "Tickets");
+        try {
+            if (ticket == null)
+                db.insertOne(document, "Tickets");
+            else {
+                Bson filter = Filters.eq("incident", ticket.getIncident());
+                db.replaceOne(filter, document, "Tickets");
+            }
+            callBack.onSucces();
+        }catch (Exception e){
+            callBack.onError(e.toString());
         }
     }
 
+
+
+
+    // --Open main window and close this one
     private void openMainAndClose(ActionEvent actionEvent, String option){
         MainWindow mainWindow = new MainWindow();
         mainWindow.setTableView(option);

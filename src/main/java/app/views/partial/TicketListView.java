@@ -14,6 +14,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -23,8 +24,12 @@ import java.util.ArrayList;
 
 public class TicketListView extends BaseListView {
 
+    // main window
     private MainWindow mainWindow;
 
+
+
+    // --Constructor
     public TicketListView(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         this.generateTable();
@@ -50,6 +55,10 @@ public class TicketListView extends BaseListView {
         getChildren().addAll(heading, filterTable, table, menu); // add all
     }
 
+
+
+
+    // --fill table with bson filter
     protected void fillTableWithData(Bson filter) {
         ObservableList<Ticket> tableList = FXCollections.observableArrayList();
         //SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
@@ -74,11 +83,18 @@ public class TicketListView extends BaseListView {
         }
     }
 
+
+
+
+
     // open empty form to add a ticket
     protected void handleCreateBtnClick() {
         new Form_Ticket(null).getStage().show();
         this.mainWindow.getStage().close();
     }
+
+
+
 
     // when there is an item selected, create form with all ticket properties filled
     protected void handleEditBtnClick() {
@@ -88,6 +104,10 @@ public class TicketListView extends BaseListView {
         }
     }
 
+
+
+
+    // --button event deleting a ticket
     protected void handleDeleteBtnClick() {
         if (table.getSelectionModel().getSelectedItem() != null) {
             // alert user about his action
