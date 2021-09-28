@@ -14,6 +14,7 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -195,16 +196,4 @@ public class Form_Ticket extends BaseForm {
         }
     }
 
-
-
-
-    // --Open main window and close this one
-    private void openMainAndClose(ActionEvent actionEvent, String option){
-        MainWindow mainWindow = new MainWindow();
-        mainWindow.setTableView(option);
-        mainWindow.getStage().show();
-
-        // close this window
-        ((Stage)(((Button)actionEvent.getSource()).getScene().getWindow())).close();
-    }
 }

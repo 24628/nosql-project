@@ -2,6 +2,7 @@ package app.views;
 
 import app.database.Database;
 import app.model.BaseModel;
+import app.model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -11,7 +12,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
 public class BaseListView extends VBox {
-
     protected Database db;
     protected TableView<BaseModel> table;
 
@@ -21,6 +21,7 @@ public class BaseListView extends VBox {
 //    public BaseListView(){
 //        db = new Database("ProjectNoSQL");
 //    }
+
 
     protected Label addHeaders(String headerName){
         this.setPadding(new Insets(20));

@@ -1,0 +1,135 @@
+package app.views.windows;
+
+import app.ICallBack;
+import app.database.Database;
+import app.helpers.SHA512;
+import app.helpers.helperMethods;
+import app.model.Employee;
+import app.model.ServiceDeskEmployee;
+import app.model.Ticket;
+import app.model.User;
+import app.views.BaseForm;
+import com.mongodb.client.model.Filters;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
+
+public class Form_Login extends BaseForm {
+
+    private Database db;
+    private helperMethods helper;
+
+    // all form items
+    private TextField emailField;
+    private PasswordField passwordField;
+
+
+    public Form_Login() {
+        // db conn
+        //db = new Database("ProjectNoSQL");
+        db = new Database("noSql");
+        helper = new helperMethods();
+
+        // --CRUD FORM-- //
+        this.addUIControls(this.form);
+        layout.getChildren().addAll(this.form);
+
+        // Create the main scene.
+        Scene Form_Login = new Scene(layout);
+
+        // Let's go!
+        stage.setTitle("Form Ticket");
+        stage.setScene(Form_Login);
+
+    }
+
+    @Override
+    protected VBox createNavBar(){
+        return new VBox();
+    }
+
+    protected void addUIControls(GridPane gridPane) {
+        // Add Header
+        Label headerLabel = new Label("Login");
+        headerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
+        gridPane.add(headerLabel, 0,0,2,1);
+        GridPane.setHalignment(headerLabel, HPos.CENTER);
+        GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
+
+        emailField = this.generateTextField("email: ", 1);
+        passwordField = this.generatePasswordField("password: ", 2);
+
+        Button submitButton = this.generateFormBtn("SUBMIT", 0);
+
+        submitButton.setOnAction(actionEvent -> {
+            try {
+                this.handleSubmitBtnClick(new ICallBack() {
+                    public void onSucces() {}
+                    public void onError(String err) {}
+                });
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    protected void handleSubmitBtnClick(ICallBack callBack) throws ParseException {
+        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        String email = emailField.getText();
+        String password = passwordField.getText();
+
+        Bson filter = Filters.and(
+                Filters.eq("email", email),
+                Filters.eq("password", SHA512.encryptThisString(password))
+        );
+
+        Document result = db.findOne(filter, "users");
+        System.out.println(result);
+
+        if(result != null){
+            if(result.get("type") == "Service_desk"){
+                ServiceDeskEmployee user = new ServiceDeskEmployee(
+                    result.get("firstName").toString(),
+                    result.get("lastName").toString(),
+                    result.get("email").toString(),
+                    result.get("phonenumber").toString(),
+                    dateFormat.parse(result.get("created_at").toString()),
+                    dateFormat.parse(result.get("updated_at").toString())
+                );
+
+                loadNewWindow(user);
+            } else {
+                Employee user = new Employee(
+                        result.get("firstName").toString(),
+                        result.get("lastName").toString(),
+                        result.get("email").toString(),
+                        result.get("phonenumber").toString(),
+                        dateFormat.parse(result.get("created_at").toString()),
+                        dateFormat.parse(result.get("updated_at").toString())
+                );
+
+                loadNewWindow(user);
+            }
+        }
+    }
+
+    private void loadNewWindow(User user){
+        this.getStage().close();
+
+        MainWindow mw = new MainWindow();
+        this.setLoggedInUser(user);
+        mw.getStage().show();
+    }
+}

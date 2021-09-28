@@ -1,5 +1,8 @@
 package app.views;
 
+import app.model.User;
+import app.views.windows.MainWindow;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -11,13 +14,19 @@ import javafx.stage.Stage;
 
 public class BaseForm {
 
+    private User currentLoggedInUser;
     protected Stage stage;
     protected VBox layout;
     protected Button dashboardButton;
     protected Button userButton;
     protected Button ticketButton;
+    protected VBox nav_bar = this.createNavBar();
     public Stage getStage() {
         return stage;
+    }
+
+    protected void setLoggedInUser(User user){
+        currentLoggedInUser = user;
     }
 
     protected GridPane form = this.createGrid();
@@ -30,13 +39,13 @@ public class BaseForm {
          layout = new VBox();
 
         // --MENU-- //
-        VBox nav_bar = this.createNavBar();
+
 
         // add menu to layout
         layout.getChildren().addAll(nav_bar);
     }
 
-    private VBox createNavBar(){
+    protected VBox createNavBar(){
         VBox container = new VBox();
         VBox header = new VBox();
         HBox nav_bar = new HBox();
@@ -138,6 +147,20 @@ public class BaseForm {
         return field;
     }
 
+    protected PasswordField generatePasswordField(String title, int placement){
+        Label label = new Label(title);
+        this.form.add(label, 0, placement);
+
+        // Add description Field
+        PasswordField field = new PasswordField();
+        field.setPrefHeight(20);
+        field.setPrefWidth(400);
+        field.setMaxWidth(400);
+        this.form.add(field, 1, placement);
+
+        return field;
+    }
+
     protected Button generateFormBtn(String btnTitle, int placement){
         Button btn = new Button(btnTitle);
         btn.setPrefHeight(40);
@@ -147,5 +170,15 @@ public class BaseForm {
         GridPane.setMargin(btn, new Insets(20, 0,20,0));
 
         return btn;
+    }
+
+    // --Open main window and close this one
+    protected void openMainAndClose(ActionEvent actionEvent, String option){
+        MainWindow mainWindow = new MainWindow();
+        mainWindow.setTableView(option);
+        mainWindow.getStage().show();
+
+        // close this window
+        ((Stage)(((Button)actionEvent.getSource()).getScene().getWindow())).close();
     }
 }
