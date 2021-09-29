@@ -19,7 +19,7 @@ public class MainApplication extends Application {
         // So we go straight to the main window of the application
 
 //        new Migrator();
-//        Migrator.migrationsToRun();
+  //      Migrator.migrationsToRun();
 
         Form_Login form = new Form_Login();
         form.getStage().show();

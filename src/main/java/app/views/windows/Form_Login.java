@@ -3,6 +3,7 @@ package app.views.windows;
 import app.ICallBack;
 import app.database.Database;
 import app.helpers.SHA512;
+import app.helpers.dateParser;
 import app.helpers.helperMethods;
 import app.model.Employee;
 import app.model.ServiceDeskEmployee;
@@ -86,7 +87,6 @@ public class Form_Login extends BaseForm {
     }
 
     protected void handleSubmitBtnClick(ICallBack callBack) throws ParseException {
-        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         String email = emailField.getText();
         String password = passwordField.getText();
 
@@ -105,8 +105,8 @@ public class Form_Login extends BaseForm {
                     result.get("lastName").toString(),
                     result.get("email").toString(),
                     result.get("phonenumber").toString(),
-                    dateFormat.parse(result.get("created_at").toString()),
-                    dateFormat.parse(result.get("updated_at").toString())
+                        dateParser.toDate(result.get("created_at").toString()),
+                        dateParser.toDate(result.get("updated_at").toString())
                 );
 
                 loadNewWindow(user);
@@ -116,8 +116,8 @@ public class Form_Login extends BaseForm {
                         result.get("lastName").toString(),
                         result.get("email").toString(),
                         result.get("phonenumber").toString(),
-                        dateFormat.parse(result.get("created_at").toString()),
-                        dateFormat.parse(result.get("updated_at").toString())
+                        dateParser.toDate(result.get("created_at").toString()),
+                        dateParser.toDate(result.get("updated_at").toString())
                 );
 
                 loadNewWindow(user);

@@ -1,8 +1,12 @@
 package app.views.partial;
 
+import app.helpers.dateParser;
 import app.model.BaseModel;
+import app.model.Ticket;
 import app.model.User;
 import app.views.BaseListView;
+import app.views.windows.Form_Ticket;
+import app.views.windows.Form_User;
 import app.views.windows.MainWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -40,7 +44,7 @@ public class UserListView extends BaseListView {
 
     protected void fillTableWithData() {
         ObservableList<User> tableList = FXCollections.observableArrayList();
-        SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
         for (Document doc : db.findAll("users")) {
             try {
                 tableList.add(new User(
@@ -48,10 +52,12 @@ public class UserListView extends BaseListView {
                         doc.get("lastName").toString(),
                         doc.get("email").toString(),
                         doc.get("phonenumber").toString(),
-                        dateFormat.parse(doc.get("created_at").toString()),
-                        dateFormat.parse(doc.get("updated_at").toString())
+                        dateParser.toDate(doc.get("created_at").toString()),
+                        dateParser.toDate(doc.get("updated_at").toString())
                 ));
-            } catch (ParseException e){System.out.println(e.toString());}
+            } catch (ParseException e) {
+                System.out.println(e.toString());
+            }
         }
 
         for (BaseModel item : tableList) {
@@ -59,8 +65,19 @@ public class UserListView extends BaseListView {
         }
     }
 
-    protected void handleCreateBtnClick() {}
-    protected void handleEditBtnClick() {}
-    protected void handleDeleteBtnClick() {}
+    protected void handleCreateBtnClick() {
+    }
+
+    protected void handleEditBtnClick() {
+        if (table.getSelectionModel().getSelectedItem() != null) {
+            new Form_User(
+                    (User) table.getSelectionModel().getSelectedItem()
+            ).getStage().show();
+            this.mainWindow.getStage().close();
+        }
+    }
+
+    protected void handleDeleteBtnClick() {
+    }
 }
 

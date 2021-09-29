@@ -2,8 +2,10 @@ package app.database.migrations.partials;
 
 import app.helpers.SHA512;
 import app.database.migrations.Migrator;
+import app.helpers.dateParser;
 import org.bson.Document;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,10 +15,8 @@ public class GenerateUserMigration extends Migrator {
 
     private final String collectionName = "users";
 
-    public GenerateUserMigration(){
+    public GenerateUserMigration() throws ParseException {
 
-//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
 
         Document serviceDeskEmployee = new Document("firstName", "Jan")
@@ -26,8 +26,8 @@ public class GenerateUserMigration extends Migrator {
                 .append("phonenumber", "0687264563")
                 .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
                 .append("password", SHA512.encryptThisString("password"))
-                .append("created_at", formatter.format(date))
-                .append("updated_at", formatter.format(date));
+                .append("created_at", dateParser.toString(date))
+                .append("updated_at", dateParser.toString(date));
 
         this.database.insertOne(serviceDeskEmployee, this.collectionName);
     }
