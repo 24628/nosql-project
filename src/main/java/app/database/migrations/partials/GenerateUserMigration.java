@@ -27,7 +27,7 @@ public class GenerateUserMigration extends Migrator {
                 .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
                 .append("password", SHA512.encryptThisString("password"))
                 .append("created_at", formatter.format(date))
-                .append("updated_at", null);
+                .append("updated_at", formatter.format(date));
 
         this.database.insertOne(serviceDeskEmployee, this.collectionName);
     }

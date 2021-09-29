@@ -3,6 +3,7 @@ package app.views.partial;
 import app.model.BaseModel;
 import app.model.User;
 import app.views.BaseListView;
+import app.views.windows.MainWindow;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.*;
@@ -14,19 +15,27 @@ import java.text.SimpleDateFormat;
 
 public class UserListView extends BaseListView {
 
-    public UserListView() {
+    private MainWindow mainWindow;
+
+    public UserListView(MainWindow mainWindow) {
+        this.mainWindow = mainWindow;
+
         this.generateTable();
 
         this.fillTableWithData();
 
         Label heading = this.addHeaders("Users");
 
+        TextField filterTable = new TextField();
+        filterTable.setMaxWidth(200);
+        filterTable.setPromptText("Enter something...");
+
         String[] columnNames = {"firstName", "lastName", "email", "phoneNumber", "Created_at", "Updated_at"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
 
-        getChildren().addAll(heading, table, menu);
+        getChildren().addAll(heading, filterTable, table, menu);
     }
 
     protected void fillTableWithData() {

@@ -13,8 +13,8 @@ import java.util.List;
 public class Database {
 
     private MongoDatabase database;
-    //private final String conS = "mongodb+srv://new-user31:qx7AA7LwaCD5WHj@cluster0.twb3h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
-    private final String conS = "mongodb+srv://Bram:Mdt58w8d1!@clusternosql.q16av.mongodb.net/ProjectNoSQL?retryWrites=true&w=majority";
+    private final String conS = "mongodb+srv://new-user31:qx7AA7LwaCD5WHj@cluster0.twb3h.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
+    //private final String conS = "mongodb+srv://Bram:Mdt58w8d1!@clusternosql.q16av.mongodb.net/ProjectNoSQL?retryWrites=true&w=majority";
 
     public Database(String DatabaseName) {
         MongoClient mongoClient = MongoClients.create(this.conS);
@@ -88,6 +88,17 @@ public class Database {
         if(this.findOne(filterString, CollectionName) != null) {
             MongoCollection<Document> collection = this.database.getCollection(CollectionName);
             collection.deleteOne(filterString);
+        }
+    }
+    /** update one document from the collection
+     * @param filterString to filter the document
+     * @param data Document data you want to replace
+     * @param CollectionName collection you want to update to
+     */
+    public void replaceOne(Bson filterString, Bson data, String CollectionName){
+        if(this.findOne(filterString, CollectionName) != null) {
+            MongoCollection<Document> collection = this.database.getCollection(CollectionName);
+            collection.replaceOne(filterString, (Document) data);
         }
     }
 }

@@ -1,6 +1,8 @@
 package app;
 
 import app.database.migrations.Migrator;
+import app.views.windows.Form_Login;
+import app.views.windows.Form_Ticket;
 import app.views.windows.MainWindow;
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -19,9 +21,9 @@ public class MainApplication extends Application {
 //        new Migrator();
 //        Migrator.migrationsToRun();
 
-        // open the main window
-        MainWindow mw = new MainWindow();
-        mw.getStage().show();
+        Form_Login form = new Form_Login();
+        form.getStage().show();
+
     }
 
     public static void main(String[] args) {

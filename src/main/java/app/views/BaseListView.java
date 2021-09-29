@@ -2,14 +2,16 @@ package app.views;
 
 import app.database.Database;
 import app.model.BaseModel;
+import app.model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
 
 public class BaseListView extends VBox {
-
     protected Database db;
     protected TableView<BaseModel> table;
 
@@ -20,10 +22,12 @@ public class BaseListView extends VBox {
 //        db = new Database("ProjectNoSQL");
 //    }
 
+
     protected Label addHeaders(String headerName){
         this.setPadding(new Insets(20));
 
         Label heading = new Label();
+        heading.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
         heading.setText(headerName);
         heading.getStyleClass().add("header");
 

@@ -1,43 +1,61 @@
 package app.views.windows;
 
+import app.ICallBack;
 import app.database.Database;
+import app.helpers.helperMethods;
 import app.model.Ticket;
 import app.views.BaseForm;
+import app.views.partial.TicketListView;
+import app.views.partial.UserListView;
 import com.mongodb.client.model.Filters;
-import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
+import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
+import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 
 public class Form_Ticket extends BaseForm {
 
+    // db, helpers and main window
     private Database db;
+    private helperMethods helper;
 
+    // all form items
+    private DatePicker reported;
+    private TextField incident;
+    private ComboBox type;
+    private ComboBox user;
+    private ComboBox priority;
+    private DatePicker deadline;
+    private TextField description;
+
+    // cmb values
+    private String[] comboBoxTypes = {"Hardware", "Software", "Service"};
+    private String[] comboBoxUserNames = {"Bram", "Koen", "Noor"};
+    private String[] comboBoxPriorityNames = {"LOW", "MEDIUM", "HIGH"};
+
+
+
+    // --Constructor
     public Form_Ticket(Ticket ticket) {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
+        helper = new helperMethods();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, ticket);
-
-        // Add the menu and the view. Default view will be the student list view
         layout.getChildren().addAll(this.form);
 
         // Create the main scene.
@@ -46,8 +64,17 @@ public class Form_Ticket extends BaseForm {
         // Let's go!
         stage.setTitle("Form Ticket");
         stage.setScene(form_Ticket);
+
+        // --BUTTON EVENTS-- //
+        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
+        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
+        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
 
+
+
+
+    // --Controls of the form
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
         // Add Header
         Label headerLabel = new Label("Create Ticket");
@@ -56,106 +83,117 @@ public class Form_Ticket extends BaseForm {
         GridPane.setHalignment(headerLabel, HPos.CENTER);
         GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
 
-        String[] comboBoxTypes = {"Choice1", "choice2", "choice3"};
-        String[] comboBoxUserNames = {"Bram", "Koen", "Noor"};
-        String[] comboBoxPriorityNames = {"LOW", "MEDIUM", "HIGH"};
+        Control[] formItems;
+        if (ticket == null)
+            formItems = this.createFormItems();
+        else
+            formItems = this.createFormItems(ticket);
 
-        Control[] formItems = {
-                this.generateDatePicker("Date/time reported: ",1),
-                this.generateTextField("Subject of incident:: ", 2),
-                this.generateComboBox("Type of incident:", comboBoxTypes, 3),
-                this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
-                this.generateComboBox("Priority", comboBoxPriorityNames,5),
-                this.generateDatePicker("Deadline/follow up: ", 6),
-                this.generateTextField("Description: ", 7),
-        };
-
-        if (ticket != null) {
-            try {
-                fillTicketData(formItems, ticket);
-            } catch (ParseException e) {
-                System.out.println(e);
-            }
-        }
 
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
 
-        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket));
+        submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket, new ICallBack() {
+            @Override
+            public void onSucces() {
+                System.out.println("data submit succesfull!");
+                openMainAndClose(actionEvent, "Ticket"); // open / refresh tableview
+            }
+
+            @Override
+            public void onError(String err) {
+                System.out.println("data submit not succesfull: " + err);
+            }
+        }));
+        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
     }
 
-    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket){
-        System.out.println("Handle Submit!");
+
+
+
+    // --create empty form
+    private Control[] createFormItems(){
+        Control[] formItems = {
+                reported = this.generateDatePicker("Date/time reported: ",1),
+                incident = this.generateTextField("Subject of incident:: ", 2),
+                type = this.generateComboBox("Type of incident:", comboBoxTypes, 3),
+                user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
+                priority = this.generateComboBox("Priority", comboBoxPriorityNames,5),
+                deadline = this.generateDatePicker("Deadline/follow up: ", 6),
+                description = this.generateTextField("Description: ", 7),
+        };
+        return formItems;
+    }
+
+
+
+
+    // --create form with ticket items filled in
+    private Control[] createFormItems(Ticket ticket){
+        reported = this.generateDatePicker("Date/time reported: ", 1);
+        reported.setValue(ticket.getReported().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+        incident = this.generateTextField("Subject of incident: ", 2);
+        incident.setText(ticket.getIncident());
+
+        type = this.generateComboBox("Type of incident:", comboBoxTypes, 3);
+        type.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) type, ticket.getType()));
+
+        user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
+        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser_id()));
+
+        priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
+        priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
+
+        deadline = this.generateDatePicker("Deadline/follow up: ", 6);
+        deadline.setValue(ticket.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+        description = this.generateTextField("Description: ", 7);
+        description.setText(ticket.getDescription());
+
+        Control[] formItems = { reported, incident, type, user, priority, deadline, description};
+        return formItems;
+    }
+
+
+
+
+    // --Submit button event handle
+    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
 
+        // foreach item in control items, add value to data list
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
                 data.add(parsedTextField.getText());
             }
-
             if(item instanceof ComboBox){
                 final ComboBox parsedComboBox = (ComboBox) item;
                 data.add(parsedComboBox.getValue().toString());
             }
-
             if(item instanceof DatePicker){
                 final DatePicker parsedDatePicker = (DatePicker) item;
                 data.add(parsedDatePicker.getValue().toString());
             }
         }
-        if (ticket == null)
-            db.insertOne(generateDocument(data), "Tickets");
-        else{
-            Bson filter = Filters.eq("incident", ticket.getIncident());
-            db.updateOne(filter, generateDocument(data), "Tickets");
-        }
-    }
 
-    private Document generateDocument(List<String> data){
-        // new document and all column names
-        Document document = new Document();
+        // generate BSON document
         String[] columnNames = {"Reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+        Document document = helper.generateDocument(data, columnNames);
 
-        // create document
-        for (int i = 0; i < data.size(); i++) {
-            document.append(columnNames[i], data.get(i));
-        }
-
-        // return document
-        return document;
-    }
-
-    // work in progress, when a ticket is selected and the button "Edit" is pressed,
-    // the form_ticket should open with all the fields already filled in....
-    protected void fillTicketData(Control[] formItems, Ticket t) throws ParseException {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        String[] ticketData = t.getTicketArray();
-        int index = 0;
-
-        for (Control item : formItems) {
-            if(item instanceof TextField){
-                ((TextField) item).setText(ticketData[index]);
+        // if ticket null, insert new one, otherwise update
+        try {
+            if (ticket == null)
+                db.insertOne(document, "Tickets");
+            else {
+                Bson filter = Filters.eq("incident", ticket.getIncident());
+                db.replaceOne(filter, document, "Tickets");
             }
-
-            if(item instanceof ComboBox){
-                ((ComboBox<?>) item).getSelectionModel().select(getCMBIndex((ComboBox<String>) item, ticketData[index]));
-            }
-
-            if(item instanceof DatePicker){
-                ((DatePicker) item).setValue(LocalDate.parse(ticketData[index], formatter));
-            }
-            index++;
+            callBack.onSucces();
+        }catch (Exception e){
+            callBack.onError(e.toString());
         }
     }
 
-    private int getCMBIndex(ComboBox<String> box, String value){
-        int index = 0;
-        for (String s:box.getItems()) {
-            if (s.equalsIgnoreCase(value))
-                break;
-            index++;
-        }
-        return index;
-    }
 }
