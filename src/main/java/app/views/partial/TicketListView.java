@@ -5,7 +5,6 @@ import app.model.Ticket;
 import app.views.BaseListView;
 import app.views.windows.Form_Ticket;
 import app.views.windows.MainWindow;
-import com.mongodb.BasicDBObject;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,13 +13,15 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
-import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.List;
+
+import static com.mongodb.client.model.Filters.or;
 
 public class TicketListView extends BaseListView {
 
@@ -41,9 +42,17 @@ public class TicketListView extends BaseListView {
         filterTable.setMaxWidth(200);
         filterTable.setPromptText("Enter something...");
         filterTable.textProperty().addListener((observable, oldValue, newValue) -> {
-            Bson filter = Filters.regex("incident", ".*" + newValue + ".*", "i");
-            table.getItems().clear();
-            fillTableWithData(filter);
+            // filter value has te be at least 3 chars long
+            if (newValue.toString().length() >= 3) {
+                Bson filter = Filters.or(Filters.regex("incident", ".*" + newValue + ".*", "i")
+                        , Filters.regex("description", ".*" + newValue + ".*", "i"));
+                table.getItems().clear();
+                fillTableWithData(filter);
+            }
+            else {
+                table.getItems().clear();
+                fillTableWithData(Filters.regex("incident", ".*", "i"));
+            }
         }); // add listener to text field property, when changed, adjust tableview data on filter
 
         //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
