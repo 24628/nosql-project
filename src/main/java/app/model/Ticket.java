@@ -1,5 +1,7 @@
 package app.model;
 
+import app.helpers.dateParser;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -95,9 +97,8 @@ public class Ticket extends BaseModel{
     }
 
     public String[] getTicketArray(){
-        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        //SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
-        String[] array = {formatter.format(reported), incident, type, user_id, priority, formatter.format(deadline), description};
+        dateParser parser = new dateParser();
+        String[] array = {parser.toString(reported), incident, type, user_id, priority, parser.toString(deadline), description};
         return array;
     }
 }
