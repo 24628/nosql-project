@@ -1,5 +1,6 @@
 package app.views.partial;
 
+import app.helpers.dateParser;
 import app.model.BaseModel;
 import app.model.Ticket;
 import app.views.BaseListView;
@@ -72,16 +73,17 @@ public class TicketListView extends BaseListView {
     protected void fillTableWithData(Bson filter) {
         ObservableList<Ticket> tableList = FXCollections.observableArrayList();
         //SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        dateParser parser = new dateParser();
         for (Document doc : db.findMany(filter, "Tickets")) {
             try {
                 tableList.add(new Ticket(
-                        dateFormat.parse(doc.get("Reported").toString()),
+                        parser.toDate(doc.get("Reported").toString()),
                         doc.get("incident").toString(),
                         doc.get("type").toString(),
                         doc.get("user_id").toString(),
                         doc.get("priority").toString(),
-                        dateFormat.parse(doc.get("deadline").toString()),
+                        parser.toDate(doc.get("deadline").toString()),
                         doc.get("description").toString(),
                         Integer.parseInt(doc.get("status").toString())
                 ));
