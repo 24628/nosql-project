@@ -26,7 +26,7 @@ public class GenerateTicketMigration extends Migrator {
                 .append("priority", "High")
                 .append("deadline", parser.toString(date))
                 .append("description", "Laptop went up in flames.")
-                .append("status", "50");
+                .append("status", "escalate");
 
         Document document2 = new Document("Reported", parser.toString(date))
                 .append("incident", "Software problem.")
@@ -35,7 +35,7 @@ public class GenerateTicketMigration extends Migrator {
                 .append("priority", "High")
                 .append("deadline", parser.toString(date))
                 .append("description", "System 32 was erased.")
-                .append("status", "40");;
+                .append("status", "closed");;
 
         Document document3 = new Document("Reported", parser.toString(date))
                 .append("incident", "Sandwich stolen.")
@@ -44,7 +44,7 @@ public class GenerateTicketMigration extends Migrator {
                 .append("priority", "High")
                 .append("deadline", parser.toString(date))
                 .append("description", "Ross's turkey sandwich was stolen")
-                .append("status", "70");;
+                .append("status", "normal");;
 
         List<Document> tickets = new ArrayList<>();
         tickets.add(document1);

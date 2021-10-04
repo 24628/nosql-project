@@ -12,10 +12,10 @@ public class Ticket extends BaseModel{
     private String priority;
     private Date deadline;
     private String description;
-    private int status;
+    private String status;
 
     public Ticket(Date reported, String incident, String type, String user_id, String priority, Date deadline,
-                  String description, int status) {
+                  String description, String status) {
         this.reported = reported;
         this.incident = incident;
         this.type = type;
@@ -86,9 +86,17 @@ public class Ticket extends BaseModel{
         this.deadline = deadline;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String[] getTicketArray(){
-        //SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("MM/dd/yyyy");
+        //SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         String[] array = {formatter.format(reported), incident, type, user_id, priority, formatter.format(deadline), description};
         return array;
     }

@@ -85,7 +85,7 @@ public class TicketListView extends BaseListView {
                         doc.get("priority").toString(),
                         parser.toDate(doc.get("deadline").toString()),
                         doc.get("description").toString(),
-                        Integer.parseInt(doc.get("status").toString())
+                        doc.get("status").toString()
                 ));
             } catch (ParseException e) {
                 System.out.println(e.toString());
