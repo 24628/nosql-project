@@ -4,10 +4,9 @@ import app.ICallBack;
 import app.database.Database;
 import app.helpers.SHA512;
 import app.helpers.dateParser;
-import app.helpers.helperMethods;
+import app.helpers.documentHandling;
 import app.model.Employee;
 import app.model.ServiceDeskEmployee;
-import app.model.Ticket;
 import app.model.User;
 import app.views.BaseForm;
 import com.mongodb.client.model.Filters;
@@ -23,14 +22,11 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Form_Login extends BaseForm {
 
     private Database db;
-    private helperMethods helper;
+    private documentHandling helper;
 
     // all form items
     private TextField emailField;
@@ -41,7 +37,7 @@ public class Form_Login extends BaseForm {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
-        helper = new helperMethods();
+        helper = new documentHandling();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form);

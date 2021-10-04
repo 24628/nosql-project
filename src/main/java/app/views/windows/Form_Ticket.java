@@ -2,22 +2,17 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
-import app.helpers.helperMethods;
+import app.helpers.documentHandling;
 import app.model.Ticket;
 import app.views.BaseForm;
-import app.views.partial.TicketListView;
-import app.views.partial.UserListView;
 import com.mongodb.client.model.Filters;
-import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-import javafx.stage.Stage;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
@@ -29,7 +24,7 @@ public class Form_Ticket extends BaseForm {
 
     // db, helpers and main window
     private Database db;
-    private helperMethods helper;
+    private documentHandling helper;
 
     // all form items
     private DatePicker reported;
@@ -52,7 +47,7 @@ public class Form_Ticket extends BaseForm {
         // db conn
         //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
-        helper = new helperMethods();
+        helper = new documentHandling();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, ticket);

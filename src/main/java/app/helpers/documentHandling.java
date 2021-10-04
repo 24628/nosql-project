@@ -5,7 +5,7 @@ import org.bson.Document;
 
 import java.util.List;
 
-public class helperMethods {
+public class documentHandling {
 
     public Document generateDocument(List<String> data, String[] columnNames){
         // new document

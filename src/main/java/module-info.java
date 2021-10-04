@@ -10,6 +10,4 @@ module com.example.projectnosqllol {
     opens app to javafx.fxml;
     opens app.model;
     exports app;
-    exports app.controller;
-    opens app.controller to javafx.fxml;
 }

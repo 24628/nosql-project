@@ -12,8 +12,10 @@ public class Ticket extends BaseModel{
     private String priority;
     private Date deadline;
     private String description;
+    private int status;
 
-    public Ticket(Date reported, String incident, String type, String user_id, String priority, Date deadline, String description) {
+    public Ticket(Date reported, String incident, String type, String user_id, String priority, Date deadline,
+                  String description, int status) {
         this.reported = reported;
         this.incident = incident;
         this.type = type;
@@ -21,6 +23,7 @@ public class Ticket extends BaseModel{
         this.priority = priority;
         this.deadline = deadline;
         this.description = description;
+        this.status = status;
     }
 
     public String getIncident() {

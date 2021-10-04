@@ -43,6 +43,7 @@ public class TicketListView extends BaseListView {
         filterTable.setPromptText("Enter something...");
         filterTable.textProperty().addListener((observable, oldValue, newValue) -> {
             // filter value has te be at least 3 chars long
+
             if (newValue.toString().length() >= 3) {
                 Bson filter = Filters.or(Filters.regex("incident", ".*" + newValue + ".*", "i")
                         , Filters.regex("description", ".*" + newValue + ".*", "i"));
@@ -56,7 +57,7 @@ public class TicketListView extends BaseListView {
         }); // add listener to text field property, when changed, adjust tableview data on filter
 
         //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
-        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description", "status"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
@@ -81,7 +82,8 @@ public class TicketListView extends BaseListView {
                         doc.get("user_id").toString(),
                         doc.get("priority").toString(),
                         dateFormat.parse(doc.get("deadline").toString()),
-                        doc.get("description").toString()
+                        doc.get("description").toString(),
+                        Integer.parseInt(doc.get("status").toString())
                 ));
             } catch (ParseException e) {
                 System.out.println(e.toString());

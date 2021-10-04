@@ -13,8 +13,8 @@ public class GenerateTicketMigration extends Migrator {
     private final String collectionName = "Tickets";
 
     public GenerateTicketMigration(){
-//        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
+//        SimpleDateFormat formatter= new SimpleDateFormat("yyyy-MM-dd");
         Date date = new Date(System.currentTimeMillis());
 
         Document document1 = new Document("Reported", formatter.format(date))
@@ -23,7 +23,8 @@ public class GenerateTicketMigration extends Migrator {
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "Laptop went up in flames.");
+                .append("description", "Laptop went up in flames.")
+                .append("status", "50");
 
         Document document2 = new Document("Reported", formatter.format(date))
                 .append("incident", "Software problem.")
@@ -31,7 +32,8 @@ public class GenerateTicketMigration extends Migrator {
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "System 32 was erased.");
+                .append("description", "System 32 was erased.")
+                .append("status", "40");;
 
         Document document3 = new Document("Reported", formatter.format(date))
                 .append("incident", "Sandwich stolen.")
@@ -39,7 +41,8 @@ public class GenerateTicketMigration extends Migrator {
                 .append("user_id", "obj(id:123123213)")
                 .append("priority", "High")
                 .append("deadline", formatter.format(date))
-                .append("description", "Ross's turkey sandwich was stolen");
+                .append("description", "Ross's turkey sandwich was stolen")
+                .append("status", "70");;
 
         List<Document> tickets = new ArrayList<>();
         tickets.add(document1);
