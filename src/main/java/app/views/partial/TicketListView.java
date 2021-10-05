@@ -1,5 +1,6 @@
 package app.views.partial;
 
+import app.database.Database;
 import app.helpers.Session;
 import app.helpers.dateParser;
 import app.helpers.ticketFilter;
@@ -18,8 +19,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.text.ParseException;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class TicketListView extends BaseListView {
 
@@ -54,7 +58,7 @@ public class TicketListView extends BaseListView {
         }); // add listener to text field property, when changed, adjust tableview data on filter
 
         //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
-        String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description", "status"};
+        String[] columnNames = {"reported", "incident", "type", "user", "priority", "deadline", "description", "status"};
         this.generateData(columnNames);
 
         HBox menu = new HBox();
@@ -70,8 +74,8 @@ public class TicketListView extends BaseListView {
     // --fill table with bson filter
     protected void fillTableWithData(Bson filter) {
         ObservableList<Ticket> tableList = FXCollections.observableArrayList();
-        //SimpleDateFormat dateFormat =new SimpleDateFormat("yyyy-MM-dd 'at' HH:mm:ss z");
-        //SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Database db = new Database("noSql");
+
         dateParser parser = new dateParser();
         for (Document doc : db.findMany(filter, "Tickets")) {
             try {
@@ -79,7 +83,7 @@ public class TicketListView extends BaseListView {
                         parser.toDate(doc.get("Reported").toString()),
                         doc.get("incident").toString(),
                         doc.get("type").toString(),
-                        doc.get("user_id").toString(),
+                        db.findOne(Filters.eq("_id", new ObjectId((String) doc.get("user_id"))), "users").getString("firstName"),
                         doc.get("priority").toString(),
                         parser.toDate(doc.get("deadline").toString()),
                         doc.get("description").toString(),
@@ -131,7 +135,7 @@ public class TicketListView extends BaseListView {
             alert.showAndWait().ifPresent(rs -> {
                 if (rs == ButtonType.OK) {
                     Ticket t = (Ticket) table.getSelectionModel().getSelectedItem();
-                    Bson filter = Filters.eq("incident", t.getIncident());
+                    Bson filter = eq("incident", t.getIncident());
                     db.deleteOne(filter, "Tickets");
                 }
             });

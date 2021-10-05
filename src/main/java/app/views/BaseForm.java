@@ -19,24 +19,21 @@ public class BaseForm {
     protected Button dashboardButton;
     protected Button userButton;
     protected Button ticketButton;
-    protected VBox nav_bar = this.createNavBar();
+    protected VBox nav_bar;
+    protected GridPane form;
+
     public Stage getStage() {
         return stage;
     }
 
-    protected GridPane form = this.createGrid();
-
     public BaseForm() {
         // create a new Stage (window)
         stage = new Stage();
+        nav_bar = this.createNavBar();
+        form = this.createGrid();
 
-        // set up the global layout, menu on the left, sub scene on the right
+        // set up the global layout and add nav
          layout = new VBox();
-
-        // --MENU-- //
-
-
-        // add menu to layout
         layout.getChildren().addAll(nav_bar);
     }
 
@@ -77,29 +74,22 @@ public class BaseForm {
         // Instantiate a new Grid Pane
         GridPane gridPane = new GridPane();
 
-        // Position the pane at the center of the screen, both vertically and horizontally
+        // Position the pane at the center of the screen, both vertically and horizontally and add padding
         gridPane.setAlignment(Pos.CENTER);
-
-        // Set a padding of 20px on each side
         gridPane.setPadding(new Insets(40, 80, 40, 40));
 
-        // Set the horizontal gap between columns
+        // Set gap for row and col
         gridPane.setHgap(10);
-
-        // Set the vertical gap between rows
         gridPane.setVgap(10);
 
-        // columnOneConstraints will be applied to all the nodes placed in column one.
+        // columnOneConstraints for both column
         ColumnConstraints columnOneConstraints = new ColumnConstraints(150, 150, Double.MAX_VALUE);
         columnOneConstraints.setHalignment(HPos.RIGHT);
-
-        // columnTwoConstraints will be applied to all the nodes placed in column two.
         ColumnConstraints columnTwoConstrains = new ColumnConstraints(150,150, Double.MAX_VALUE);
         columnTwoConstrains.setHgrow(Priority.ALWAYS);
 
         // Add Column Constraints
         gridPane.getColumnConstraints().addAll(columnOneConstraints, columnTwoConstrains);
-
         return gridPane;
     }
 
@@ -115,7 +105,6 @@ public class BaseForm {
 
         return date;
     }
-
     protected ComboBox<String> generateComboBox(String title, String[] comboBoxItems, int placement){
         Label label = new Label(title);
         this.form.add(label, 0, placement);
@@ -127,7 +116,6 @@ public class BaseForm {
 
         return comboBox;
     }
-
     protected TextField generateTextField(String title, int placement){
         Label label = new Label(title);
         this.form.add(label, 0, placement);
@@ -141,7 +129,6 @@ public class BaseForm {
 
         return field;
     }
-
     protected PasswordField generatePasswordField(String title, int placement){
         Label label = new Label(title);
         this.form.add(label, 0, placement);
@@ -155,13 +142,12 @@ public class BaseForm {
 
         return field;
     }
-
     protected Button generateFormBtn(String btnTitle, int placement){
         Button btn = new Button(btnTitle);
         btn.setPrefHeight(40);
         btn.setDefaultButton(true);
         btn.setPrefWidth(100);
-        this.form.add(btn, placement, 8, 2, 1);
+        this.form.add(btn, placement, 9, 2, 1);
         GridPane.setMargin(btn, new Insets(20, 0,20,0));
 
         return btn;

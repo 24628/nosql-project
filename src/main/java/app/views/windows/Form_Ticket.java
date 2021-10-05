@@ -2,6 +2,7 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
+import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.Ticket;
 import app.views.BaseForm;
@@ -16,15 +17,17 @@ import javafx.scene.text.FontWeight;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Form_Ticket extends BaseForm {
 
     // db, helpers and main window
-    private Database db;
-    private documentHandling helper;
+    private final Database db;
+    private final documentHandling helper;
 
     // all form items
     private DatePicker reported;
@@ -34,29 +37,33 @@ public class Form_Ticket extends BaseForm {
     private ComboBox priority;
     private DatePicker deadline;
     private TextField description;
+    private ComboBox status;
 
     // cmb values
-    private String[] comboBoxTypes = {"Hardware", "Software", "Service"};
-    private String[] comboBoxUserNames = {"Bram", "Koen", "Noor"};
-    private String[] comboBoxPriorityNames = {"LOW", "MEDIUM", "HIGH"};
+    private final String[] comboBoxTypes;
+    private String[] comboBoxUserNames;
+    private final String[] comboBoxPriorityNames;
+    private final String[] comboBoxStatusValues;
 
 
 
     // --Constructor
     public Form_Ticket(Ticket ticket) {
-        // db conn
-        //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
         helper = new documentHandling();
 
-        // --CRUD FORM-- //
+        // cmb values
+        comboBoxTypes = new String[]{"Hardware", "Software", "Service"};
+        comboBoxUserNames = getAllUserNames();
+        comboBoxPriorityNames = new String[]{"High", "Low", "Normal"};
+        comboBoxStatusValues = new String[]{"Closed", "Normal", "Escalated"};
+
+        // add controls
         this.addUIControls(this.form, ticket);
         layout.getChildren().addAll(this.form);
 
-        // Create the main scene.
+        // make scene and add to stage
         Scene form_Ticket = new Scene(layout);
-
-        // Let's go!
         stage.setTitle("Form Ticket");
         stage.setScene(form_Ticket);
 
@@ -116,6 +123,7 @@ public class Form_Ticket extends BaseForm {
                 priority = this.generateComboBox("Priority", comboBoxPriorityNames,5),
                 deadline = this.generateDatePicker("Deadline/follow up: ", 6),
                 description = this.generateTextField("Description: ", 7),
+                status = this.generateComboBox("Status: ", comboBoxStatusValues, 8)
         };
         return formItems;
     }
@@ -135,7 +143,7 @@ public class Form_Ticket extends BaseForm {
         type.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) type, ticket.getType()));
 
         user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
-        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser_id()));
+        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser()));
 
         priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
         priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
@@ -145,6 +153,9 @@ public class Form_Ticket extends BaseForm {
 
         description = this.generateTextField("Description: ", 7);
         description.setText(ticket.getDescription());
+
+        status = this.generateComboBox("Status: ", comboBoxStatusValues, 8);
+        status.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) status, ticket.getStatus()));
 
         Control[] formItems = { reported, incident, type, user, priority, deadline, description};
         return formItems;
@@ -156,7 +167,7 @@ public class Form_Ticket extends BaseForm {
     // --Submit button event handle
     protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
-
+        dateParser parser = new dateParser();
         // foreach item in control items, add value to data list
         for (Control item : formItems) {
             if(item instanceof TextField){
@@ -174,7 +185,7 @@ public class Form_Ticket extends BaseForm {
         }
 
         // generate BSON document
-        String[] columnNames = {"Reported", "incident", "type", "user_id", "priority", "deadline", "description"};
+        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
         Document document = helper.generateDocument(data, columnNames);
 
         // if ticket null, insert new one, otherwise update
@@ -191,4 +202,14 @@ public class Form_Ticket extends BaseForm {
         }
     }
 
+
+
+
+    private String[] getAllUserNames(){
+        List<String> users = new ArrayList<>();
+        for (Document doc : db.findAll("users")) {
+            users.add(doc.getString("firstName"));
+        }
+        return users.toArray(String[]::new);
+    }
 }

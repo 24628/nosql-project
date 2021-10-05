@@ -10,18 +10,18 @@ public class Ticket extends BaseModel{
     private Date reported;
     private String incident;
     private String type;
-    private String user_id;
+    private String user;
     private String priority;
     private Date deadline;
     private String description;
     private String status;
 
-    public Ticket(Date reported, String incident, String type, String user_id, String priority, Date deadline,
+    public Ticket(Date reported, String incident, String type, String user, String priority, Date deadline,
                   String description, String status) {
         this.reported = reported;
         this.incident = incident;
         this.type = type;
-        this.user_id = user_id;
+        this.user = user;
         this.priority = priority;
         this.deadline = deadline;
         this.description = description;
@@ -44,12 +44,12 @@ public class Ticket extends BaseModel{
         this.type = type;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUser() {
+        return user;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUser(String user_id) {
+        this.user = user_id;
     }
 
     public String getPriority() {
@@ -98,7 +98,7 @@ public class Ticket extends BaseModel{
 
     public String[] getTicketArray(){
         dateParser parser = new dateParser();
-        String[] array = {parser.toString(reported), incident, type, user_id, priority, parser.toString(deadline), description};
+        String[] array = {parser.toString(reported), incident, type, user, priority, parser.toString(deadline), description};
         return array;
     }
 }
