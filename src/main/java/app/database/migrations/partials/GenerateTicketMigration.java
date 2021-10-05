@@ -33,13 +33,13 @@ public class GenerateTicketMigration extends Migrator {
         String[] status = {"Closed", "Normal", "Escalated"};
 
         return new Document("Reported", parser.toString(date))
-                .append("incident", generateRandomString( ThreadLocalRandom.current().nextInt(15, 30)))
+                .append("incident", generateActualText( ThreadLocalRandom.current().nextInt(5, 35)))
                 .append("type", selectRandomFromArray(type))
                 .append("user_id", database.findOne(Filters.eq("type", "Service_desk"), "users").get("_id").toString())
                 .append("employee_id", database.findOne(Filters.eq("type", "Employee"), "users").get("_id").toString())
                 .append("priority", selectRandomFromArray(priority))
                 .append("deadline", parser.toString(date))
-                .append("description", generateRandomString( ThreadLocalRandom.current().nextInt(60, 200)))
+                .append("description", generateActualText( ThreadLocalRandom.current().nextInt(60, 250)))
                 .append("status", selectRandomFromArray(status));
     }
 
