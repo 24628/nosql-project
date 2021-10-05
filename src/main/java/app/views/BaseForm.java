@@ -28,6 +28,9 @@ public class BaseForm {
     protected void setLoggedInUser(User user){
         currentLoggedInUser = user;
     }
+    protected User getLoggedInUser(){
+        return currentLoggedInUser;
+    }
 
     protected GridPane form = this.createGrid();
 

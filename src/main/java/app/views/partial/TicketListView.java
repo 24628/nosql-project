@@ -1,6 +1,7 @@
 package app.views.partial;
 
 import app.helpers.dateParser;
+import app.helpers.ticketFilter;
 import app.model.BaseModel;
 import app.model.Ticket;
 import app.views.BaseListView;
@@ -18,11 +19,6 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.List;
-
-import static com.mongodb.client.model.Filters.or;
 
 public class TicketListView extends BaseListView {
 
@@ -46,10 +42,9 @@ public class TicketListView extends BaseListView {
             // filter value has te be at least 3 chars long
 
             if (newValue.toString().length() >= 3) {
-                Bson filter = Filters.or(Filters.regex("incident", ".*" + newValue + ".*", "i")
-                        , Filters.regex("description", ".*" + newValue + ".*", "i"));
                 table.getItems().clear();
-                fillTableWithData(filter);
+                ticketFilter filter = new ticketFilter();
+                fillTableWithData(filter.filterTickets(newValue));
             }
             else {
                 table.getItems().clear();
@@ -61,7 +56,9 @@ public class TicketListView extends BaseListView {
         String[] columnNames = {"reported", "incident", "type", "user_id", "priority", "deadline", "description", "status"};
         this.generateData(columnNames);
 
-        HBox menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
+        HBox menu = new HBox();
+        if (mainWindow.getServicedeskAccess())
+            menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
 
         getChildren().addAll(heading, filterTable, table, menu); // add all
     }

@@ -1,5 +1,6 @@
 package app.views.windows;
 
+import app.model.ServiceDeskEmployee;
 import app.views.BaseForm;
 import app.views.partial.TicketListView;
 import app.views.partial.UserListView;
@@ -33,5 +34,12 @@ public class MainWindow extends BaseForm {
             layout.getChildren().set(1, new TicketListView(this));
         if (option.equalsIgnoreCase("User"))
             layout.getChildren().set(1, new UserListView(this));
+    }
+
+    public boolean getServicedeskAccess(){
+        if (this.getLoggedInUser() instanceof ServiceDeskEmployee)
+            return true;
+        else
+            return false;
     }
 }

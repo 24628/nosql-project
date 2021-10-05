@@ -56,6 +56,7 @@ public class BaseListView extends VBox {
         this.table.setEditable(true);
         this.table.getSelectionModel().setCellSelectionEnabled(true);
         this.table.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+        this.table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
     }
 
     protected void generateData(String[] columnNames){
