@@ -92,7 +92,7 @@ public class UserListView extends BaseListView {
                 if (rs == ButtonType.OK) {
                     User u = (User) table.getSelectionModel().getSelectedItem();
                     Bson filter = Filters.eq("email", u.getEmail());
-                    db.deleteOne(filter, "user");
+                    db.deleteOne(filter, "users");
                 }
             });
         }

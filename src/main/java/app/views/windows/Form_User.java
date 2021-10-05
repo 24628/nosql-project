@@ -150,6 +150,10 @@ public class Form_User extends BaseForm {
                 final TextField parsedTextField = (TextField) item;
                 data.add(parsedTextField.getText());
             }
+            if(item instanceof ComboBox) {
+                final ComboBox parsedComboBox = (ComboBox) item;
+                data.add(parsedComboBox.getValue().toString());
+            }
             if(item instanceof DatePicker){
                 final DatePicker parsedDatePicker = (DatePicker) item;
                 data.add(parsedDatePicker.getValue().toString());
