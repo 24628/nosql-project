@@ -70,6 +70,9 @@ public class Form_User extends BaseForm {
         cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"User"));
     }
 
+    private void handleSubmitBtnClick(Control[] formItems, User user, ICallBack ticket) {
+    }
+
     // --create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
@@ -87,29 +90,28 @@ public class Form_User extends BaseForm {
 
 
     // --create form with ticket items filled in
-    private Control[] createFormItems(Ticket ticket){
-        reported = this.generateDatePicker("Date/time reported: ", 1);
-        reported.setValue(ticket.getReported().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+    private Control[] createFormItems(User user){
+        firstName = this.generateTextField("First Name: ", 1);
+        firstName.setText(user.getFirstName());
 
-        incident = this.generateTextField("Subject of incident: ", 2);
-        incident.setText(ticket.getIncident());
+        lastName = this.generateTextField("Last Name: ", 2);
+        lastName.setText(user.getLastName());
 
-        type = this.generateComboBox("Type of incident:", comboBoxTypes, 3);
-        type.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) type, ticket.getType()));
+        email = this.generateTextField("Email: ", 3);
+        email.setText(user.getEmail());
 
-        user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
-        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser_id()));
+        phoneNumber = this.generateTextField("Phone Number: ", 4);
+        phoneNumber.setText(user.getPhoneNumber());
 
-        priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
-        priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
+        created_at = this.generateDatePicker("Created at: ", 5);
+        created_at.setValue(user.getCreated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-        deadline = this.generateDatePicker("Deadline/follow up: ", 6);
-        deadline.setValue(ticket.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        updated_at = this.generateDatePicker("Updated At: ", 6);
+        updated_at.setValue(user.getUpdated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-        description = this.generateTextField("Description: ", 7);
-        description.setText(ticket.getDescription());
 
-        Control[] formItems = { reported, incident, type, user, priority, deadline, description};
+
+        Control[] formItems = { firstName,lastName,email,phoneNumber,created_at,updated_at};
         return formItems;
     }
 }
