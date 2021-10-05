@@ -1,9 +1,11 @@
 package app.views.windows;
 
 import app.ICallBack;
-import app.model.Ticket;
+import app.database.Database;
+import app.helpers.documentHandling;
 import app.model.User;
 import app.views.BaseForm;
+import com.mongodb.client.model.Filters;
 import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -11,11 +13,17 @@ import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
-
+import org.bson.Document;
+import org.bson.conversions.Bson;
 import java.time.ZoneId;
-import java.util.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Form_User extends BaseForm {
+
+    // database and helpers
+    private Database db;
+    private documentHandling helper;
 
     private TextField firstName;
     private TextField lastName;
@@ -25,16 +33,26 @@ public class Form_User extends BaseForm {
     private DatePicker updated_at;
 
     public Form_User(User user) {
-        // Add the menu and the view. Default view will be the student list view
-        layout.getChildren().addAll();
+        // set database and helper
+        db = new Database("noSql");
+        helper = new documentHandling();
+
+        // --CRUD FORM-- //
+        this.addUIControls(this.form, user);
+        layout.getChildren().addAll(this.form);
 
         // Create the main scene.
         // Scene mainScene = new StyledScene(layout);
-        Scene crud_User = new Scene(layout);
+        Scene form_User = new Scene(layout);
 
         // Let's go!
-        stage.setTitle("CRUD Users");
-        stage.setScene(crud_User);
+        stage.setTitle("Users Form");
+        stage.setScene(form_User);
+
+        // --NAV BUTTON EVENTS-- //
+        ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
+        userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
+        dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
 
     protected void addUIControls(GridPane gridPane, User user) {
@@ -51,15 +69,16 @@ public class Form_User extends BaseForm {
         else
             formItems = this.createFormItems(user);
 
-
+        // generate form buttons
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
-        Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
+        Button submitButton = this.generateFormBtn("SUBMIT USER", 0);
 
+        // set action to submit button
         submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, user, new ICallBack() {
             @Override
             public void onSucces() {
                 System.out.println("data submit succesfull!");
-                openMainAndClose(actionEvent, "Ticket"); // open / refresh tableview
+                openMainAndClose(actionEvent, "User"); // open / refresh tableview
             }
 
             @Override
@@ -67,13 +86,11 @@ public class Form_User extends BaseForm {
                 System.out.println("data submit not succesfull: " + err);
             }
         }));
+        // set action to cancel button
         cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"User"));
     }
 
-    private void handleSubmitBtnClick(Control[] formItems, User user, ICallBack ticket) {
-    }
-
-    // --create empty form
+    // create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
                 firstName = this.generateTextField("First Name",1),
@@ -86,10 +103,7 @@ public class Form_User extends BaseForm {
         return formItems;
     }
 
-
-
-
-    // --create form with ticket items filled in
+    // create form with user items filled in
     private Control[] createFormItems(User user){
         firstName = this.generateTextField("First Name: ", 1);
         firstName.setText(user.getFirstName());
@@ -111,7 +125,41 @@ public class Form_User extends BaseForm {
 
 
 
-        Control[] formItems = { firstName,lastName,email,phoneNumber,created_at,updated_at};
+        Control[] formItems = { firstName, lastName, email, phoneNumber, created_at, updated_at};
         return formItems;
+    }
+
+    // Submit button event handle
+    private void handleSubmitBtnClick(Control[] formItems, User user, ICallBack callBack) {
+        List<String> data = new ArrayList<String>();
+
+        // foreach item in control items, add value to data list
+        for (Control item : formItems) {
+            if(item instanceof TextField){
+                final TextField parsedTextField = (TextField) item;
+                data.add(parsedTextField.getText());
+            }
+            if(item instanceof DatePicker){
+                final DatePicker parsedDatePicker = (DatePicker) item;
+                data.add(parsedDatePicker.getValue().toString());
+            }
+        }
+
+        // generate BSON document
+        String[] columnNames = {"firstName" , "lastName" , "email" , "phoneNumber" , "created_at" , "updated_at"};
+        Document document = helper.generateDocument(data, columnNames);
+
+        // if user null, insert new one, otherwise update
+        try {
+            if (user == null)
+                db.insertOne(document, "users");
+            else {
+                Bson filter = Filters.eq("email", user.getEmail());
+                db.replaceOne(filter, document, "users");
+            }
+            callBack.onSucces();
+        }catch (Exception e){
+            callBack.onError(e.toString());
+        }
     }
 }
