@@ -14,10 +14,10 @@ public class MainWindow extends BaseForm {
         // --BUTTON EVENTS-- //
         ticketButton.setOnAction(actionEvent -> layout.getChildren().set(1, new TicketListView(this)));
         userButton.setOnAction(actionEvent -> layout.getChildren().set(1, new UserListView(this)));
-        dashboardButton.setOnAction(actionEvent -> layout.getChildren().set(1, new DashboardView()));
+        dashboardButton.setOnAction(actionEvent -> layout.getChildren().set(1, new DashboardView(this)));
 
         // Add the menu and the view. Default view will be the student list view
-        layout.getChildren().addAll(new DashboardView());
+        layout.getChildren().addAll(new DashboardView(this));
 
         // Create the main scene.
         // Scene mainScene = new StyledScene(layout);

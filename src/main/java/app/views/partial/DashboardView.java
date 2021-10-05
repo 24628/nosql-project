@@ -1,6 +1,7 @@
 package app.views.partial;
 
 import app.views.BaseListView;
+import app.views.windows.MainWindow;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -11,7 +12,10 @@ import javafx.scene.text.Font;
 
 public class DashboardView extends BaseListView {
 
-    public DashboardView(){
+    private MainWindow main;
+
+    public DashboardView(MainWindow main){
+        this.main = main;
 
         // --DASHBOARD-- //
         this.setPrefHeight(500);
@@ -27,6 +31,7 @@ public class DashboardView extends BaseListView {
         dashboard_Header.setAlignment(Pos.CENTER);
         dashboard_Title.setFont(Font.font("Verdana", 30));
         show_List.setMinWidth(150);
+        show_List.setOnAction(actionEvent -> main.setTableView("Ticket"));
         dashboard_Header.getChildren().addAll(dashboard_Title, show_List);
 
         // add to dashboard

@@ -1,5 +1,6 @@
 package app;
 
+import app.database.migrations.Migrator;
 import app.views.windows.Form_Login;
 import javafx.application.Application;
 import javafx.stage.Stage;
