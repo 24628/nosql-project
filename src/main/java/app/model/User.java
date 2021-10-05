@@ -6,14 +6,16 @@ public class User extends BaseModel{
 
     protected String firstName;
     protected String lastName;
+    protected String userType;
     protected String email;
     protected String phoneNumber;
     protected Date created_at;
     protected Date updated_at;
 
-    public User(String firstName, String lastName, String email, String phoneNumber, Date created_at, Date updated_at) {
+    public User(String firstName, String lastName, String userType, String email, String phoneNumber, Date created_at, Date updated_at) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.userType = userType;
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.created_at = created_at;
@@ -34,6 +36,14 @@ public class User extends BaseModel{
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     public String getEmail() {

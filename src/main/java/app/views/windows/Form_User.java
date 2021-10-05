@@ -2,6 +2,7 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
+import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.User;
 import app.views.BaseForm;
@@ -24,18 +25,24 @@ public class Form_User extends BaseForm {
     // database and helpers
     private Database db;
     private documentHandling helper;
+    private dateParser dateHelper;
 
     private TextField firstName;
     private TextField lastName;
+    private ComboBox userType;
     private TextField email;
     private TextField phoneNumber;
     private DatePicker created_at;
     private DatePicker updated_at;
 
+    // comboBox values
+    private String[] comboBoxUserTypes = {"Employee", "Service_desk"};
+
     public Form_User(User user) {
         // set database and helper
         db = new Database("noSql");
         helper = new documentHandling();
+        dateHelper = new dateParser();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, user);
@@ -95,10 +102,11 @@ public class Form_User extends BaseForm {
         Control[] formItems = {
                 firstName = this.generateTextField("First Name",1),
                 lastName = this.generateTextField("Last Name", 2),
-                email = this.generateTextField("E-mail", 3),
-                phoneNumber = this.generateTextField("Phone Number", 4),
-                created_at = this.generateDatePicker("Created At", 5),
-                updated_at = this.generateDatePicker("Updated At", 6)
+                userType = this.generateComboBox("User Type", comboBoxUserTypes, 3 ),
+                email = this.generateTextField("E-mail", 4),
+                phoneNumber = this.generateTextField("Phone Number", 5),
+                created_at = this.generateDatePicker("Created At", 6),
+                updated_at = this.generateDatePicker("Updated At", 7)
         };
         return formItems;
     }
@@ -111,21 +119,24 @@ public class Form_User extends BaseForm {
         lastName = this.generateTextField("Last Name: ", 2);
         lastName.setText(user.getLastName());
 
-        email = this.generateTextField("Email: ", 3);
+        userType = this.generateComboBox("User Type", comboBoxUserTypes, 3 );
+        userType.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) userType, user.getUserType()));
+
+        email = this.generateTextField("Email: ", 4);
         email.setText(user.getEmail());
 
-        phoneNumber = this.generateTextField("Phone Number: ", 4);
+        phoneNumber = this.generateTextField("Phone Number: ", 5);
         phoneNumber.setText(user.getPhoneNumber());
 
-        created_at = this.generateDatePicker("Created at: ", 5);
+        created_at = this.generateDatePicker("Created at: ", 6);
         created_at.setValue(user.getCreated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-        updated_at = this.generateDatePicker("Updated At: ", 6);
+        updated_at = this.generateDatePicker("Updated At: ", 7);
         updated_at.setValue(user.getUpdated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
 
 
-        Control[] formItems = { firstName, lastName, email, phoneNumber, created_at, updated_at};
+        Control[] formItems = { firstName, lastName, userType, email, phoneNumber, created_at, updated_at};
         return formItems;
     }
 
@@ -146,7 +157,7 @@ public class Form_User extends BaseForm {
         }
 
         // generate BSON document
-        String[] columnNames = {"firstName" , "lastName" , "email" , "phoneNumber" , "created_at" , "updated_at"};
+        String[] columnNames = {"firstName" , "lastName" , "type", "email" , "phonenumber" , "created_at" , "updated_at"};
         Document document = helper.generateDocument(data, columnNames);
 
         // if user null, insert new one, otherwise update

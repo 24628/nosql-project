@@ -99,6 +99,7 @@ public class Form_Login extends BaseForm {
                 ServiceDeskEmployee user = new ServiceDeskEmployee(
                     result.get("firstName").toString(),
                     result.get("lastName").toString(),
+                    result.get("type").toString(),
                     result.get("email").toString(),
                     result.get("phonenumber").toString(),
                         dateParser.toDate(result.get("created_at").toString()),
@@ -110,6 +111,7 @@ public class Form_Login extends BaseForm {
                 Employee user = new Employee(
                         result.get("firstName").toString(),
                         result.get("lastName").toString(),
+                        result.get ("type").toString(),
                         result.get("email").toString(),
                         result.get("phonenumber").toString(),
                         dateParser.toDate(result.get("created_at").toString()),
