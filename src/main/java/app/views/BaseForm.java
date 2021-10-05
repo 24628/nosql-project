@@ -14,7 +14,6 @@ import javafx.stage.Stage;
 
 public class BaseForm {
 
-    private User currentLoggedInUser;
     protected Stage stage;
     protected VBox layout;
     protected Button dashboardButton;
@@ -23,13 +22,6 @@ public class BaseForm {
     protected VBox nav_bar = this.createNavBar();
     public Stage getStage() {
         return stage;
-    }
-
-    protected void setLoggedInUser(User user){
-        currentLoggedInUser = user;
-    }
-    protected User getLoggedInUser(){
-        return currentLoggedInUser;
     }
 
     protected GridPane form = this.createGrid();

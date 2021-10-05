@@ -3,6 +3,7 @@ package app.views.windows;
 import app.ICallBack;
 import app.database.Database;
 import app.helpers.SHA512;
+import app.helpers.Session;
 import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.Employee;
@@ -22,6 +23,7 @@ import org.bson.Document;
 import org.bson.conversions.Bson;
 
 import java.text.ParseException;
+import java.util.Objects;
 
 public class Form_Login extends BaseForm {
 
@@ -95,7 +97,9 @@ public class Form_Login extends BaseForm {
         System.out.println(result);
 
         if(result != null){
-            if(result.get("type") == "Service_desk"){
+            if(Objects.equals(result.getString("type"), "Service_desk")){
+
+                System.out.println("test");
                 ServiceDeskEmployee user = new ServiceDeskEmployee(
                     result.get("firstName").toString(),
                     result.get("lastName").toString(),
@@ -125,7 +129,7 @@ public class Form_Login extends BaseForm {
         this.getStage().close();
 
         MainWindow mw = new MainWindow();
-        this.setLoggedInUser(user);
+        Session.getInstance(user);
         mw.getStage().show();
     }
 }

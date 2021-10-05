@@ -1,5 +1,6 @@
 package app.views.partial;
 
+import app.helpers.Session;
 import app.helpers.dateParser;
 import app.helpers.ticketFilter;
 import app.model.BaseModel;
@@ -57,7 +58,7 @@ public class TicketListView extends BaseListView {
         this.generateData(columnNames);
 
         HBox menu = new HBox();
-        if (mainWindow.getServicedeskAccess())
+        if (Session.isServiceDeskEmployee())
             menu = this.createCrudButtons("add Ticket", "edit Ticket", "Delete Ticket");
 
         getChildren().addAll(heading, filterTable, table, menu); // add all
