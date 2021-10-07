@@ -14,7 +14,7 @@ public class dateParser {
     }
 
     public static LocalDateTime toDate(String date) throws ParseException {
-        return (LocalDateTime) formatter.parse(date);
+        return LocalDateTime.parse(date, formatter);
     }
 
 }

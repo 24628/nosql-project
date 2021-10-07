@@ -22,11 +22,11 @@ public class MainApplication extends Application {
 //       new Migrator();
 //       Migrator.migrationsToRun();
 
-//        Form_Login form = new Form_Login();
-//        form.getStage().show();
+        Form_Login form = new Form_Login();
+        form.getStage().show();
 
-        MainWindow mw = new MainWindow();
-        mw.getStage().show();
+//        MainWindow mw = new MainWindow();
+//        mw.getStage().show();
 
     }
 
