@@ -13,6 +13,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
+import org.controlsfx.control.spreadsheet.Grid;
 
 public class DashboardView extends BaseListView {
 
@@ -39,20 +40,19 @@ public class DashboardView extends BaseListView {
         hBoxContainer.setAlignment(Pos.CENTER);
         dashboard_Title.setFont(Font.font("Verdana", 30));
 
-        generateProgressiveCircle first = new generateProgressiveCircle(150.0f, 20.0f, Color.RED);
-        generateProgressiveCircle second = new generateProgressiveCircle(150.0f, 20.0f, Color.BLUE);
-        secondContainer.getChildren().addAll(first.getProgressiveBar(), second.getProgressiveBar());
-        secondContainer.setMinWidth(750);
+        generateProgressiveCircle first = new generateProgressiveCircle(150.0f, 20.0f, Color.RED, totalTickets, openTickets);
+        generateProgressiveCircle second = new generateProgressiveCircle(150.0f, 20.0f, Color.BLUE, pastDeadline);
+        AnchorPane firstPane = first.getProgressiveBar();
+        AnchorPane secondPane = second.getProgressiveBar();
 
         GridPane gridPane = new GridPane();
-        gridPane.setGridLinesVisible(true);
+        //gridPane.setGridLinesVisible(true);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setMinWidth(500);
+        gridPane.setPrefWidth(500);
         gridPane.setHgap(350);
-        gridPane.add(first.getProgressiveBar(), 1, 0, 1, 1);
-        GridPane.setHalignment(first.getProgressiveBar(), HPos.CENTER);
-        gridPane.add(second.getProgressiveBar(), 2, 0, 1, 1);
-        GridPane.setHalignment(second.getProgressiveBar(), HPos.CENTER);
+        gridPane.add(firstPane, 1, 0);
+        gridPane.add(secondPane, 2, 0);
 
         // add to dashboard
         hBoxContainer.getChildren().addAll(dashboard_Title, gridPane);

@@ -15,7 +15,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="ProjectNoSQLLOL" options="--add-exports org.controlsfx.controls/org.controlsfx=com.example.projectnosqllol" />
+      <module name="ProjectNoSQLLOL" options="" />
     </option>
   </component>
 </project>
