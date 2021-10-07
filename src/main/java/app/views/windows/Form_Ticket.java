@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.bson.Document;
 import org.bson.conversions.Bson;
+import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -169,6 +170,7 @@ public class Form_Ticket extends BaseForm {
     protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
         dateParser parser = new dateParser();
+
         // foreach item in control items, add value to data list
         for (Control item : formItems) {
             if(item instanceof TextField){
