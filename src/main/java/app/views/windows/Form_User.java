@@ -2,6 +2,7 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
+import app.helpers.controls.DateTimePicker;
 import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.User;
@@ -32,8 +33,8 @@ public class Form_User extends BaseForm {
     private ComboBox userType;
     private TextField email;
     private TextField phoneNumber;
-    private DatePicker created_at;
-    private DatePicker updated_at;
+    private DateTimePicker created_at;
+    private DateTimePicker updated_at;
 
     // comboBox values
     private String[] comboBoxUserTypes = {"Employee", "Service_desk"};
@@ -104,9 +105,7 @@ public class Form_User extends BaseForm {
                 lastName = this.generateTextField("Last Name", 2),
                 userType = this.generateComboBox("User Type", comboBoxUserTypes, 3 ),
                 email = this.generateTextField("E-mail", 4),
-                phoneNumber = this.generateTextField("Phone Number", 5),
-                created_at = this.generateDatePicker("Created At", 6),
-                updated_at = this.generateDatePicker("Updated At", 7)
+                phoneNumber = this.generateTextField("Phone Number", 5)
         };
         return formItems;
     }
@@ -128,15 +127,8 @@ public class Form_User extends BaseForm {
         phoneNumber = this.generateTextField("Phone Number: ", 5);
         phoneNumber.setText(user.getPhoneNumber());
 
-        created_at = this.generateDatePicker("Created at: ", 6);
-        created_at.setValue(user.getCreated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
 
-        updated_at = this.generateDatePicker("Updated At: ", 7);
-        updated_at.setValue(user.getUpdated_at().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-
-
-
-        Control[] formItems = { firstName, lastName, userType, email, phoneNumber, created_at, updated_at};
+        Control[] formItems = { firstName, lastName, userType, email, phoneNumber};
         return formItems;
     }
 
@@ -154,14 +146,14 @@ public class Form_User extends BaseForm {
                 final ComboBox parsedComboBox = (ComboBox) item;
                 data.add(parsedComboBox.getValue().toString());
             }
-            if(item instanceof DatePicker){
-                final DatePicker parsedDatePicker = (DatePicker) item;
-                data.add(parsedDatePicker.getValue().toString());
+            if(item instanceof DateTimePicker){
+                final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
+                data.add(dateParser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
         }
 
         // generate BSON document
-        String[] columnNames = {"firstName" , "lastName" , "type", "email" , "phonenumber" , "created_at" , "updated_at"};
+        String[] columnNames = {"firstName" , "lastName" , "type", "email" , "phonenumber"};
         Document document = helper.generateDocument(data, columnNames);
 
         // if user null, insert new one, otherwise update

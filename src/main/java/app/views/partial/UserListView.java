@@ -45,19 +45,13 @@ public class UserListView extends BaseListView {
         dateParser parser = new dateParser();
         ObservableList<User> tableList = FXCollections.observableArrayList();
         for (Document doc : db.findAll("users")) {
-            try {
-                tableList.add(new User(
-                        doc.get("firstName").toString(),
-                        doc.get("lastName").toString(),
-                        doc.get("type").toString(),
-                        doc.get("email").toString(),
-                        doc.get("phonenumber").toString(),
-                        parser.toDate(doc.get("created_at").toString()),
-                        parser.toDate(doc.get("updated_at").toString())
-                ));
-            } catch (ParseException e) {
-                System.out.println(e.toString());
-            }
+            tableList.add(new User(
+                    doc.get("firstName").toString(),
+                    doc.get("lastName").toString(),
+                    doc.get("type").toString(),
+                    doc.get("email").toString(),
+                    doc.get("phonenumber").toString()
+            ));
         }
 
         for (BaseModel item : tableList) {

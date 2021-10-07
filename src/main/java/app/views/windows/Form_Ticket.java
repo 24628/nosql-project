@@ -2,6 +2,7 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
+import app.helpers.controls.DateTimePicker;
 import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.Ticket;
@@ -30,12 +31,12 @@ public class Form_Ticket extends BaseForm {
     private final documentHandling helper;
 
     // all form items
-    private DatePicker reported;
+    private DateTimePicker reported;
     private TextField incident;
     private ComboBox type;
     private ComboBox user;
     private ComboBox priority;
-    private DatePicker deadline;
+    private DateTimePicker deadline;
     private TextField description;
     private ComboBox status;
 
@@ -116,12 +117,12 @@ public class Form_Ticket extends BaseForm {
     // --create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
-                reported = this.generateDatePicker("Date/time reported: ",1),
+                reported = this.generateDateTimePicker("Date/time reported: ",1),
                 incident = this.generateTextField("Subject of incident:: ", 2),
                 type = this.generateComboBox("Type of incident:", comboBoxTypes, 3),
                 user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
                 priority = this.generateComboBox("Priority", comboBoxPriorityNames,5),
-                deadline = this.generateDatePicker("Deadline/follow up: ", 6),
+                deadline = this.generateDateTimePicker("Deadline/follow up: ", 6),
                 description = this.generateTextField("Description: ", 7),
                 status = this.generateComboBox("Status: ", comboBoxStatusValues, 8)
         };
@@ -133,8 +134,8 @@ public class Form_Ticket extends BaseForm {
 
     // --create form with ticket items filled in
     private Control[] createFormItems(Ticket ticket){
-        reported = this.generateDatePicker("Date/time reported: ", 1);
-        reported.setValue(ticket.getReported().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        reported = this.generateDateTimePicker("Date/time reported: ", 1);
+        reported.setDateTimeValue(ticket.getReported());
 
         incident = this.generateTextField("Subject of incident: ", 2);
         incident.setText(ticket.getIncident());
@@ -148,8 +149,8 @@ public class Form_Ticket extends BaseForm {
         priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
         priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
 
-        deadline = this.generateDatePicker("Deadline/follow up: ", 6);
-        deadline.setValue(ticket.getDeadline().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+        deadline = this.generateDateTimePicker("Deadline/follow up: ", 6);
+        deadline.setDateTimeValue(ticket.getDeadline());
 
         description = this.generateTextField("Description: ", 7);
         description.setText(ticket.getDescription());
@@ -178,9 +179,9 @@ public class Form_Ticket extends BaseForm {
                 final ComboBox parsedComboBox = (ComboBox) item;
                 data.add(parsedComboBox.getValue().toString());
             }
-            if(item instanceof DatePicker){
-                final DatePicker parsedDatePicker = (DatePicker) item;
-                data.add(parsedDatePicker.getValue().toString());
+            if(item instanceof DateTimePicker){
+                final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
+                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
         }
 

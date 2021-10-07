@@ -8,6 +8,7 @@ import org.bson.Document;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,11 +20,9 @@ public class GenerateUserMigration extends Migrator {
 
     private final String collectionName = "users";
     private final dateParser parser = new dateParser();
-    private final Date date = new Date(System.currentTimeMillis());
+    private final LocalDateTime date = LocalDateTime.now();
 
     public GenerateUserMigration() throws ParseException {
-
-        Date date = new Date(System.currentTimeMillis());
 
         List<Document> users = new ArrayList<>();
         for(int i = 1; i < 100; i++){

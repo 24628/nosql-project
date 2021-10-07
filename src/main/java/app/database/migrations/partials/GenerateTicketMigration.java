@@ -6,6 +6,7 @@ import com.mongodb.client.model.Filters;
 import org.bson.Document;
 
 import java.text.ParseException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -15,7 +16,7 @@ public class GenerateTicketMigration extends Migrator {
 
     private final String collectionName = "Tickets";
     private final dateParser parser = new dateParser();
-    private final Date date = new Date(System.currentTimeMillis());
+    private final LocalDateTime date = LocalDateTime.now();
 
     public GenerateTicketMigration() throws ParseException {
 

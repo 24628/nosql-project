@@ -1,11 +1,12 @@
 package app.model;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 public class Employee extends User {
 
 
-    public Employee(String firstName, String lastName, String userType, String email, String phoneNumber, Date created_at, Date updated_at) {
-        super(firstName, lastName, userType, email, phoneNumber, created_at, updated_at);
+    public Employee(String firstName, String lastName, String userType, String email, String phoneNumber) {
+        super(firstName, lastName, userType, email, phoneNumber);
     }
 }

@@ -1,7 +1,9 @@
 package app.views.partial;
 
+import app.helpers.generateProgressiveCircle;
 import app.views.BaseListView;
 import app.views.windows.MainWindow;
+import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -29,45 +31,31 @@ public class DashboardView extends BaseListView {
         this.setPadding(new Insets(50, 0, 0, 0));
 
         // header of dashboard
-        HBox dashboard_Header = new HBox();
+        VBox hBoxContainer = new VBox();
         Label dashboard_Title = new Label("Current incidents");
 
-        dashboard_Header.setSpacing(325);
-        dashboard_Header.setAlignment(Pos.CENTER);
+        HBox secondContainer = new HBox();
+        hBoxContainer.setSpacing(150);
+        hBoxContainer.setAlignment(Pos.CENTER);
         dashboard_Title.setFont(Font.font("Verdana", 30));
 
-        Arc ProgressBarProgress = new Arc();
-        ProgressBarProgress.setRadiusX(150.0f);
-        ProgressBarProgress.setRadiusY(150.0f);
-        ProgressBarProgress.setStartAngle(0);
-        ProgressBarProgress.setLength(10);
-        ProgressBarProgress.fillProperty();
-        ProgressBarProgress.setFill(Color.RED);
-        ProgressBarProgress.setType(ArcType.ROUND);
+        generateProgressiveCircle first = new generateProgressiveCircle(150.0f, 20.0f, Color.RED);
+        generateProgressiveCircle second = new generateProgressiveCircle(150.0f, 20.0f, Color.BLUE);
+        secondContainer.getChildren().addAll(first.getProgressiveBar(), second.getProgressiveBar());
+        secondContainer.setMinWidth(750);
 
-        Arc ProgressBarHolder = new Arc();
-        ProgressBarHolder.setRadiusX(150.0f);
-        ProgressBarHolder.setRadiusY(150.0f);
-        ProgressBarHolder.setStartAngle(0);
-        ProgressBarHolder.setLength(360.0f);
-        ProgressBarHolder.setFill(Color.GRAY);
-        ProgressBarHolder.setType(ArcType.ROUND);
-
-        Arc InnerCircle = new Arc();
-        InnerCircle.setRadiusX(100.0f);
-        InnerCircle.setRadiusY(100.0f);
-        InnerCircle.setStartAngle(0);
-        InnerCircle.setLength(360.0f);
-        InnerCircle.setFill(Color.WHITE);
-        InnerCircle.setType(ArcType.ROUND);
-
-        AnchorPane pane = new AnchorPane();
-        pane.getChildren().addAll(ProgressBarHolder, ProgressBarProgress, InnerCircle);
-
-        dashboard_Header.getChildren().addAll(dashboard_Title,pane);
-
+        GridPane gridPane = new GridPane();
+        gridPane.setGridLinesVisible(true);
+        gridPane.setAlignment(Pos.CENTER);
+        gridPane.setMinWidth(500);
+        gridPane.setHgap(350);
+        gridPane.add(first.getProgressiveBar(), 1, 0, 1, 1);
+        GridPane.setHalignment(first.getProgressiveBar(), HPos.CENTER);
+        gridPane.add(second.getProgressiveBar(), 2, 0, 1, 1);
+        GridPane.setHalignment(second.getProgressiveBar(), HPos.CENTER);
 
         // add to dashboard
-        getChildren().add(dashboard_Header);
+        hBoxContainer.getChildren().addAll(dashboard_Title, gridPane);
+        getChildren().addAll(hBoxContainer);
     }
 }

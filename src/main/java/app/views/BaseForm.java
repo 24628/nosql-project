@@ -1,5 +1,6 @@
 package app.views;
 
+import app.helpers.controls.DateTimePicker;
 import app.model.User;
 import app.views.windows.MainWindow;
 import javafx.event.ActionEvent;
@@ -94,11 +95,11 @@ public class BaseForm {
     }
 
 
-    protected DatePicker generateDatePicker(String title, int placement){
+    protected DateTimePicker generateDateTimePicker(String title, int placement){
         Label label = new Label(title);
         this.form.add(label, 0,placement);
 
-        DatePicker date = new DatePicker();
+        DateTimePicker date = new DateTimePicker();
         date.setPrefHeight(20);
         date.setPrefWidth(400);
         this.form.add(date, 1, placement);

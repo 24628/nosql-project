@@ -1,7 +1,5 @@
 package app.model;
 
-import java.util.Date;
-
 public class User extends BaseModel{
 
     protected String firstName;
@@ -9,17 +7,15 @@ public class User extends BaseModel{
     protected String userType;
     protected String email;
     protected String phoneNumber;
-    protected Date created_at;
-    protected Date updated_at;
 
-    public User(String firstName, String lastName, String userType, String email, String phoneNumber, Date created_at, Date updated_at) {
+
+    public User(String firstName, String lastName, String userType, String email, String phoneNumber) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
         this.email = email;
         this.phoneNumber = phoneNumber;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
+
     }
 
     public String getFirstName() {
@@ -60,22 +56,6 @@ public class User extends BaseModel{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
-    }
-
-    public Date getCreated_at() {
-        return created_at;
-    }
-
-    public void setCreated_at(Date created_at) {
-        this.created_at = created_at;
-    }
-
-    public Date getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(Date updated_at) {
-        this.updated_at = updated_at;
     }
 
     public User getUser(){

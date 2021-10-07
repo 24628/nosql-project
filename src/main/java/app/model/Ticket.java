@@ -2,21 +2,22 @@ package app.model;
 
 import app.helpers.dateParser;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 public class Ticket extends BaseModel{
 
-    private Date reported;
+    private LocalDateTime reported;
     private String incident;
     private String type;
     private String user;
     private String priority;
-    private Date deadline;
+    private LocalDateTime deadline;
     private String description;
     private String status;
 
-    public Ticket(Date reported, String incident, String type, String user, String priority, Date deadline,
+    public Ticket(LocalDateTime reported, String incident, String type, String user, String priority, LocalDateTime deadline,
                   String description, String status) {
         this.reported = reported;
         this.incident = incident;
@@ -72,19 +73,19 @@ public class Ticket extends BaseModel{
         return this;
     }
 
-    public Date getReported() {
+    public LocalDateTime getReported() {
         return reported;
     }
 
-    public void setReported(Date reported) {
+    public void setReported(LocalDateTime reported) {
         this.reported = reported;
     }
 
-    public Date getDeadline() {
+    public LocalDateTime getDeadline() {
         return deadline;
     }
 
-    public void setDeadline(Date deadline) {
+    public void setDeadline(LocalDateTime deadline) {
         this.deadline = deadline;
     }
 

@@ -105,9 +105,7 @@ public class Form_Login extends BaseForm {
                     result.get("lastName").toString(),
                     result.get("type").toString(),
                     result.get("email").toString(),
-                    result.get("phonenumber").toString(),
-                        dateParser.toDate(result.get("created_at").toString()),
-                        dateParser.toDate(result.get("updated_at").toString())
+                    result.get("phonenumber").toString()
                 );
 
                 loadNewWindow(user);
@@ -117,9 +115,7 @@ public class Form_Login extends BaseForm {
                         result.get("lastName").toString(),
                         result.get ("type").toString(),
                         result.get("email").toString(),
-                        result.get("phonenumber").toString(),
-                        dateParser.toDate(result.get("created_at").toString()),
-                        dateParser.toDate(result.get("updated_at").toString())
+                        result.get("phonenumber").toString()
                 );
 
                 loadNewWindow(user);
