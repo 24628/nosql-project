@@ -72,9 +72,12 @@ public class DateTimePicker extends DatePicker {
         getEditor().commitValue();
     }
 
+//    public LocalDateTime getDateTimeValue() {
+//        return dateTimeValue.get();
+//    }
     public LocalDateTime getDateTimeValue() {
-        return dateTimeValue.get();
-    }
+    return dateTimeValue.get();
+}
 
     public void setDateTimeValue(LocalDateTime dateTimeValue) {
         this.dateTimeValue.set(dateTimeValue);

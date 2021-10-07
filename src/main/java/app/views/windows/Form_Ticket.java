@@ -159,7 +159,7 @@ public class Form_Ticket extends BaseForm {
         status = this.generateComboBox("Status: ", comboBoxStatusValues, 8);
         status.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) status, ticket.getStatus()));
 
-        Control[] formItems = { reported, incident, type, user, priority, deadline, description};
+        Control[] formItems = { reported, incident, type, user, priority, deadline, description, status};
         return formItems;
     }
 
@@ -171,38 +171,44 @@ public class Form_Ticket extends BaseForm {
         List<String> data = new ArrayList<String>();
         dateParser parser = new dateParser();
 
+        Document user = db.findOne(Filters.eq("firstName", ticket.getUser()), "users");
+        String userID = user.getObjectId("_id").toString();
+        System.out.println(userID);
         // foreach item in control items, add value to data list
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
-                data.add(parsedTextField.getText());
+                //data.add(parsedTextField.getText());
+                System.out.println(parsedTextField.getText());
             }
             if(item instanceof ComboBox){
                 final ComboBox parsedComboBox = (ComboBox) item;
-                data.add(parsedComboBox.getValue().toString());
+                //data.add(parsedComboBox.getValue().toString());
+                System.out.println(parsedComboBox.getValue().toString());
             }
             if(item instanceof DateTimePicker){
                 final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
-                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+                //data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+                System.out.println(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
         }
 
         // generate BSON document
-        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
-        Document document = helper.generateDocument(data, columnNames);
-
-        // if ticket null, insert new one, otherwise update
-        try {
-            if (ticket == null)
-                db.insertOne(document, "Tickets");
-            else {
-                Bson filter = Filters.eq("incident", ticket.getIncident());
-                db.replaceOne(filter, document, "Tickets");
-            }
-            callBack.onSucces();
-        }catch (Exception e){
-            callBack.onError(e.toString());
-        }
+//        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
+//        Document document = helper.generateDocument(data, columnNames);
+//
+//        // if ticket null, insert new one, otherwise update
+//        try {
+//            if (ticket == null)
+//                db.insertOne(document, "Tickets");
+//            else {
+//                Bson filter = Filters.eq("incident", ticket.getIncident());
+//                db.replaceOne(filter, document, "Tickets");
+//            }
+//            callBack.onSucces();
+//        }catch (Exception e){
+//            callBack.onError(e.toString());
+//        }
     }
 
 
