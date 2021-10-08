@@ -70,7 +70,7 @@ public class Form_Login extends BaseForm {
         emailField = this.generateTextField("email: ", 1);
         passwordField = this.generatePasswordField("password: ", 2);
 
-        Button submitButton = this.generateFormBtn("SUBMIT", 0);
+        Button submitButton = this.generateFormBtn("LOGIN", 0);
 
         submitButton.setOnAction(actionEvent -> {
             try {
@@ -99,7 +99,7 @@ public class Form_Login extends BaseForm {
         if(result != null){
             if(Objects.equals(result.getString("type"), "Service_desk")){
 
-                System.out.println("test");
+                System.out.println("SD employee");
                 ServiceDeskEmployee user = new ServiceDeskEmployee(
                     result.get("firstName").toString(),
                     result.get("lastName").toString(),
@@ -111,6 +111,7 @@ public class Form_Login extends BaseForm {
 
                 loadNewWindow(user);
             } else {
+                System.out.println("Employee");
                 Employee user = new Employee(
                         result.get("firstName").toString(),
                         result.get("lastName").toString(),
@@ -128,8 +129,8 @@ public class Form_Login extends BaseForm {
     private void loadNewWindow(User user){
         this.getStage().close();
 
-        MainWindow mw = new MainWindow();
         Session.getInstance(user);
+        MainWindow mw = new MainWindow();
         mw.getStage().show();
     }
 }

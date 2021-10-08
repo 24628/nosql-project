@@ -1,7 +1,9 @@
 package app.views;
 
+import app.helpers.Session;
 import app.helpers.controls.DateTimePicker;
 import app.model.User;
+import app.views.windows.Form_Login;
 import app.views.windows.MainWindow;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
@@ -15,8 +17,10 @@ import javafx.stage.Stage;
 
 public class BaseForm {
 
+    protected User user;
     protected Stage stage;
     protected VBox layout;
+    protected Button logoutButton;
     protected Button dashboardButton;
     protected Button userButton;
     protected Button ticketButton;
@@ -34,7 +38,7 @@ public class BaseForm {
         form = this.createGrid();
 
         // set up the global layout and add nav
-         layout = new VBox();
+        layout = new VBox();
         layout.getChildren().addAll(nav_bar);
     }
 
@@ -53,20 +57,24 @@ public class BaseForm {
         header.getChildren().addAll(title, description);
 
         // buttons
+        logoutButton = new Button("Logout");
         dashboardButton = new Button("Dashboard");
         userButton = new Button("Users");
         ticketButton = new Button("Tickets");
-        dashboardButton.setMinWidth(395);
+        dashboardButton.setMinWidth(296);
         dashboardButton.setMinHeight(40);
-        ticketButton.setMinWidth(395);
+        ticketButton.setMinWidth(296);
         ticketButton.setMinHeight(40);
-        userButton.setMinWidth(395);
+        userButton.setMinWidth(296);
         userButton.setMinHeight(40);
+        logoutButton.setMinWidth(296);
+        logoutButton.setMinHeight(40);
 
         // add all children and set alignment to right
         nav_bar.setAlignment(Pos.CENTER);
-        nav_bar.getChildren().addAll(dashboardButton, ticketButton, userButton);
-        //container.setAlignment(Pos.CENTER);
+        if(Session.isServiceDeskEmployee()) nav_bar.getChildren().addAll(logoutButton, dashboardButton, ticketButton, userButton);
+        else nav_bar.getChildren().addAll(logoutButton, dashboardButton, ticketButton);
+        container.setAlignment(Pos.CENTER);
         container.getChildren().addAll(header, nav_bar);
         return container;
     }
@@ -162,5 +170,13 @@ public class BaseForm {
 
         // close this window
         ((Stage)(((Button)actionEvent.getSource()).getScene().getWindow())).close();
+    }
+
+    protected void logoutFromSession(){
+        Session.destroy();
+        this.getStage().close();
+
+        Form_Login form = new Form_Login();
+        form.getStage().show();
     }
 }
