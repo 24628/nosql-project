@@ -127,7 +127,7 @@ public class Form_User extends BaseForm {
         phoneNumber = this.generateTextField("Phone Number: ", 5);
         phoneNumber.setText(user.getPhoneNumber());
 
-        location = this.generateComboBox("Location: ", comboBoxUserTypes, 3 );
+        location = this.generateComboBox("Location: ", comboBoxUserTypes, 6 );
         location.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) location, user.getLocation()));
 
 
