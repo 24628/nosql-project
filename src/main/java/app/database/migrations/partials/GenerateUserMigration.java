@@ -19,8 +19,6 @@ import static com.mongodb.client.model.Filters.eq;
 public class GenerateUserMigration extends Migrator {
 
     private final String collectionName = "users";
-    private final dateParser parser = new dateParser();
-    private final LocalDateTime date = LocalDateTime.now();
 
     public GenerateUserMigration() throws ParseException {
 
@@ -41,8 +39,6 @@ public class GenerateUserMigration extends Migrator {
                 .append("email", generateRandomString(ThreadLocalRandom.current().nextInt(5, 14))+"@example.com")
                 .append("phonenumber", "0687264563")
                 .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
-                .append("password", SHA512.encryptThisString("password"))
-                .append("created_at", dateParser.toString(date))
-                .append("updated_at", dateParser.toString(date));
+                .append("password", SHA512.encryptThisString("password"));
     }
 }
