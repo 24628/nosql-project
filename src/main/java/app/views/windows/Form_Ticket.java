@@ -46,9 +46,6 @@ public class Form_Ticket extends BaseForm {
     private String[] comboBoxUserNames;
     private final String[] comboBoxPriorityNames;
     private final String[] comboBoxStatusValues;
-
-
-
     // --Constructor
     public Form_Ticket(Ticket ticket) {
         db = new Database("noSql");
@@ -74,10 +71,6 @@ public class Form_Ticket extends BaseForm {
         userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
         dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
-
-
-
-
     // --Controls of the form
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
         // Add Header
@@ -111,10 +104,6 @@ public class Form_Ticket extends BaseForm {
         }));
         cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
     }
-
-
-
-
     // --create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
@@ -129,10 +118,6 @@ public class Form_Ticket extends BaseForm {
         };
         return formItems;
     }
-
-
-
-
     // --create form with ticket items filled in
     private Control[] createFormItems(Ticket ticket){
         reported = this.generateDateTimePicker("Date/time reported: ", 1);
@@ -162,10 +147,6 @@ public class Form_Ticket extends BaseForm {
         Control[] formItems = { reported, incident, type, user, priority, deadline, description, status};
         return formItems;
     }
-
-
-
-
     // --Submit button event handle
     protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
@@ -178,37 +159,34 @@ public class Form_Ticket extends BaseForm {
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
-                //data.add(parsedTextField.getText());
-                System.out.println(parsedTextField.getText());
+                data.add(parsedTextField.getText());
             }
             if(item instanceof ComboBox){
                 final ComboBox parsedComboBox = (ComboBox) item;
-                //data.add(parsedComboBox.getValue().toString());
-                System.out.println(parsedComboBox.getValue().toString());
+                data.add(parsedComboBox.getValue().toString());
+
             }
             if(item instanceof DateTimePicker){
                 final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
-                //data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
-                System.out.println(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
         }
 
-        // generate BSON document
-//        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
-//        Document document = helper.generateDocument(data, columnNames);
-//
-//        // if ticket null, insert new one, otherwise update
-//        try {
-//            if (ticket == null)
-//                db.insertOne(document, "Tickets");
-//            else {
-//                Bson filter = Filters.eq("incident", ticket.getIncident());
-//                db.replaceOne(filter, document, "Tickets");
-//            }
-//            callBack.onSucces();
-//        }catch (Exception e){
-//            callBack.onError(e.toString());
-//        }
+        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
+        Document document = helper.generateDocument(data, columnNames);
+
+        // if ticket null, insert new one, otherwise update
+        try {
+            if (ticket == null)
+                db.insertOne(document, "Tickets");
+            else {
+                Bson filter = Filters.eq("incident", ticket.getIncident());
+                db.replaceOne(filter, document, "Tickets");
+            }
+            callBack.onSucces();
+        }catch (Exception e){
+            callBack.onError(e.toString());
+        }
     }
 
 
