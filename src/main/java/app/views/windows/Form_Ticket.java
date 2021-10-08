@@ -128,6 +128,7 @@ public class Form_Ticket extends BaseForm {
     }
 
 
+
     // --create form with ticket items filled in
     private Control[] createFormItems(Ticket ticket){
         reported = this.generateDateTimePicker("Date/time reported: ", 1);
@@ -160,6 +161,9 @@ public class Form_Ticket extends BaseForm {
         Control[] formItems = { reported, incident, type, user_id, employee_id, priority, deadline, description, status};
         return formItems;
     }
+
+
+
     // --Submit button event handle
     protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
         List<String> data = new ArrayList<String>();
