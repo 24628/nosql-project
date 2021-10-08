@@ -33,7 +33,7 @@ public class UserListView extends BaseListView {
         filterTable.setMaxWidth(200);
         filterTable.setPromptText("Enter something...");
 
-        String[] columnNames = {"firstName", "lastName", "type", "email", "phoneNumber", "location"};
+        String[] columnNames = {"firstName", "lastName", "userType", "email", "phoneNumber", "location"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
@@ -42,7 +42,6 @@ public class UserListView extends BaseListView {
     }
 
     protected void fillTableWithData() {
-        dateParser parser = new dateParser();
         ObservableList<User> tableList = FXCollections.observableArrayList();
         for (Document doc : db.findAll("users")) {
             tableList.add(new User(

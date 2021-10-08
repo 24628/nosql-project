@@ -32,14 +32,14 @@ public class GenerateUserMigration extends Migrator {
 
     private Document generateDocument(){
         String[] type = {"Employee", "Service_desk"};
+        String[] location = {"Amsterdam", "Haarlem", "Knuppeldam", "Headquarters (HQ)"};
 
         return new Document("firstName", generateRandomString(ThreadLocalRandom.current().nextInt(5, 14)))
                 .append("lastName", generateRandomString(ThreadLocalRandom.current().nextInt(5, 14)))
                 .append("type", selectRandomFromArray(type))
                 .append("email", generateRandomString(ThreadLocalRandom.current().nextInt(5, 14))+"@example.com")
                 .append("phonenumber", "0687264563")
-//                .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
-                .append("location", "Amsterdam")
+                .append("location", selectRandomFromArray(location))
                 .append("password", SHA512.encryptThisString("password"));
     }
 }
