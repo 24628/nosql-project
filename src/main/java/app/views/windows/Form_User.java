@@ -60,6 +60,7 @@ public class Form_User extends BaseForm {
         ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
         userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
         dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
+
     }
 
     protected void addUIControls(GridPane gridPane, User user) {

@@ -18,7 +18,7 @@ public class MainApplication extends Application {
 
         // We should open a login window, but that is outside of scope for this lesson.
         // So we go straight to the main window of the application
-//
+
 //       new Migrator();
 //       Migrator.migrationsToRun();
 
