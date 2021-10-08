@@ -118,7 +118,7 @@ public class BaseForm {
         Label label = new Label(title);
         this.form.add(label, 0, placement);
 
-        ComboBox<String> comboBox = new ComboBox<String>();
+        ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setPrefWidth(400);
         comboBox.getItems().addAll(comboBoxItems);
         this.form.add(comboBox, 1, placement);
@@ -173,8 +173,8 @@ public class BaseForm {
     }
 
     protected void logoutFromSession(){
-        Session.destroy();
         this.getStage().close();
+        Session.destroy();
 
         Form_Login form = new Form_Login();
         form.getStage().show();
