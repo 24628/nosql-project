@@ -22,7 +22,7 @@ public class GenerateLocationsMigration extends Migrator {
                 .append("created_at", formatter.format(date))
                 .append("updated_at", null);
 
-        Document document2 = new Document("location", "Haarlam")
+        Document document2 = new Document("location", "Haarlem")
                 .append("created_at", formatter.format(date))
                 .append("updated_at", null);
 
@@ -30,7 +30,7 @@ public class GenerateLocationsMigration extends Migrator {
                 .append("created_at", formatter.format(date))
                 .append("updated_at", null);
 
-        Document document4 = new Document("location", "Headquarters")
+        Document document4 = new Document("location", "Headquarters (HQ)")
                 .append("created_at", formatter.format(date))
                 .append("updated_at", null);
 

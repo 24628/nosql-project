@@ -54,8 +54,8 @@ public class BaseForm {
 
         // buttons
         dashboardButton = new Button("Dashboard");
-        userButton = new Button("User");
-        ticketButton = new Button("Ticket");
+        userButton = new Button("Users");
+        ticketButton = new Button("Tickets");
         dashboardButton.setMinWidth(395);
         dashboardButton.setMinHeight(40);
         ticketButton.setMinWidth(395);
