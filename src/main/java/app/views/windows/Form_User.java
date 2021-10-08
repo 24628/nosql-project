@@ -26,24 +26,23 @@ public class Form_User extends BaseForm {
     // database and helpers
     private Database db;
     private documentHandling helper;
-    private dateParser dateHelper;
 
     private TextField firstName;
     private TextField lastName;
     private ComboBox userType;
     private TextField email;
     private TextField phoneNumber;
-    private DateTimePicker created_at;
-    private DateTimePicker updated_at;
+    private ComboBox location;
+
 
     // comboBox values
     private String[] comboBoxUserTypes = {"Employee", "Service_desk"};
+    private String[] comboBoxLocations = {"Amsterdam", "Haarlem", "Knuppeldam", "Headquarters (HQ)"};
 
     public Form_User(User user) {
         // set database and helper
         db = new Database("noSql");
         helper = new documentHandling();
-        dateHelper = new dateParser();
 
         // --CRUD FORM-- //
         this.addUIControls(this.form, user);
@@ -101,11 +100,12 @@ public class Form_User extends BaseForm {
     // create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
-                firstName = this.generateTextField("First Name",1),
-                lastName = this.generateTextField("Last Name", 2),
-                userType = this.generateComboBox("User Type", comboBoxUserTypes, 3 ),
-                email = this.generateTextField("E-mail", 4),
-                phoneNumber = this.generateTextField("Phone Number", 5)
+                firstName = this.generateTextField("First Name: ",1),
+                lastName = this.generateTextField("Last Name: ", 2),
+                userType = this.generateComboBox("User Type: ", comboBoxUserTypes, 3 ),
+                email = this.generateTextField("E-mail: ", 4),
+                phoneNumber = this.generateTextField("Phone Number: ", 5),
+                location = this.generateComboBox("Location: ", comboBoxLocations, 6 )
         };
         return formItems;
     }
@@ -127,8 +127,11 @@ public class Form_User extends BaseForm {
         phoneNumber = this.generateTextField("Phone Number: ", 5);
         phoneNumber.setText(user.getPhoneNumber());
 
+        location = this.generateComboBox("Location: ", comboBoxUserTypes, 3 );
+        location.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) location, user.getLocation()));
 
-        Control[] formItems = { firstName, lastName, userType, email, phoneNumber};
+
+        Control[] formItems = { firstName, lastName, userType, email, phoneNumber, location};
         return formItems;
     }
 
@@ -146,14 +149,10 @@ public class Form_User extends BaseForm {
                 final ComboBox parsedComboBox = (ComboBox) item;
                 data.add(parsedComboBox.getValue().toString());
             }
-            if(item instanceof DateTimePicker){
-                final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
-                data.add(dateParser.toString(parsedDateTimePicker.getDateTimeValue()));
-            }
         }
 
         // generate BSON document
-        String[] columnNames = {"firstName" , "lastName" , "type", "email" , "phonenumber"};
+        String[] columnNames = {"firstName" , "lastName" , "type", "email" , "phonenumber", "location"};
         Document document = helper.generateDocument(data, columnNames);
 
         // if user null, insert new one, otherwise update

@@ -33,7 +33,7 @@ public class UserListView extends BaseListView {
         filterTable.setMaxWidth(200);
         filterTable.setPromptText("Enter something...");
 
-        String[] columnNames = {"firstName", "lastName", "type", "email", "phoneNumber", "created_at", "updated_at"};
+        String[] columnNames = {"firstName", "lastName", "type", "email", "phoneNumber", "location"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
@@ -50,7 +50,8 @@ public class UserListView extends BaseListView {
                     doc.get("lastName").toString(),
                     doc.get("type").toString(),
                     doc.get("email").toString(),
-                    doc.get("phonenumber").toString()
+                    doc.get("phonenumber").toString(),
+                    doc.get("location").toString()
             ));
         }
 

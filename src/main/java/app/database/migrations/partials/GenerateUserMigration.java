@@ -38,7 +38,8 @@ public class GenerateUserMigration extends Migrator {
                 .append("type", selectRandomFromArray(type))
                 .append("email", generateRandomString(ThreadLocalRandom.current().nextInt(5, 14))+"@example.com")
                 .append("phonenumber", "0687264563")
-                .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
+//                .append("location_id", this.database.findOne(eq("location", "Amsterdam"),"locations").get("_id"))
+                .append("location", "Amsterdam")
                 .append("password", SHA512.encryptThisString("password"));
     }
 }

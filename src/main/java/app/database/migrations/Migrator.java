@@ -20,7 +20,7 @@ public class Migrator {
     }
 
     public static void migrationsToRun() throws ParseException {
-        new GenerateLocationsMigration();
+//        new GenerateLocationsMigration();
         new GenerateUserMigration();
         new GenerateTicketMigration();
     }

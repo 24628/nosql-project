@@ -7,14 +7,16 @@ public class User extends BaseModel{
     protected String userType;
     protected String email;
     protected String phoneNumber;
+    protected String location;
 
 
-    public User(String firstName, String lastName, String userType, String email, String phoneNumber) {
+    public User(String firstName, String lastName, String userType, String email, String phoneNumber, String location) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.userType = userType;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.location = location;
 
     }
 
@@ -56,6 +58,14 @@ public class User extends BaseModel{
 
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
     }
 
     public User getUser(){
