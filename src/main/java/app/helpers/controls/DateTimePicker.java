@@ -2,23 +2,28 @@ package app.helpers.controls;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.event.EventHandler;
 import javafx.scene.control.DatePicker;
+import javafx.scene.input.KeyEvent;
 import javafx.util.StringConverter;
 
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 
 public class DateTimePicker extends DatePicker {
-    public static final String DefaultFormat = "yyyy-MM-dd HH:mm";
+    public static final String DefaultFormat = "uuuu-MM-dd HH:mm";
 
     private DateTimeFormatter formatter;
     private ObjectProperty<LocalDateTime> dateTimeValue = new SimpleObjectProperty<>(LocalDateTime.now());
     private ObjectProperty<String> format = new SimpleObjectProperty<String>() {
         public void set(String newValue) {
             super.set(newValue);
-            formatter = DateTimeFormatter.ofPattern(newValue);
+            formatter = DateTimeFormatter.ofPattern(newValue).withResolverStyle(ResolverStyle.STRICT);
         }
     };
 
@@ -31,6 +36,20 @@ public class DateTimePicker extends DatePicker {
         setFormat(DefaultFormat);
         setConverter(new InternalConverter());
         alignColumnCountWithFormat();
+
+        this.addEventFilter(KeyEvent.KEY_RELEASED, keyEvent -> {
+            try {
+                this.setDateTimeValue(LocalDateTime.parse(this.getEditor().getText(), formatter));
+            } catch (DateTimeParseException e) {
+                if (
+                    this.getEditor().getText().matches("[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]") &&
+                    this.getEditor().getText().length() == 16
+                ) {
+                    System.out.println("This should be a valid date format so i can update it!");
+                    this.setDateTimeValue(LocalDateTime.parse(this.getEditor().getText(), formatter));
+                }
+            }
+        });
 
         // Syncronize changes to the underlying date value back to the dateTimeValue
         valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -72,12 +91,9 @@ public class DateTimePicker extends DatePicker {
         getEditor().commitValue();
     }
 
-//    public LocalDateTime getDateTimeValue() {
-//        return dateTimeValue.get();
-//    }
     public LocalDateTime getDateTimeValue() {
-    return dateTimeValue.get();
-}
+        return dateTimeValue.get();
+    }
 
     public void setDateTimeValue(LocalDateTime dateTimeValue) {
         this.dateTimeValue.set(dateTimeValue);

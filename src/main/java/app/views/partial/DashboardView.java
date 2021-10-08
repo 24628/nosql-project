@@ -35,13 +35,12 @@ public class DashboardView extends BaseListView {
         VBox hBoxContainer = new VBox();
         Label dashboard_Title = new Label("Current incidents");
 
-        HBox secondContainer = new HBox();
         hBoxContainer.setSpacing(150);
         hBoxContainer.setAlignment(Pos.CENTER);
         dashboard_Title.setFont(Font.font("Verdana", 30));
 
-        generateProgressiveCircle first = new generateProgressiveCircle(150.0f, 20.0f, Color.RED, totalTickets, openTickets);
-        generateProgressiveCircle second = new generateProgressiveCircle(150.0f, 20.0f, Color.BLUE, pastDeadline);
+        generateProgressiveCircle first = new generateProgressiveCircle(150.0f, Color.LIGHTSKYBLUE, totalTickets, openTickets);
+        generateProgressiveCircle second = new generateProgressiveCircle(150.0f, Color.RED, pastDeadline);
         AnchorPane firstPane = first.getProgressiveBar();
         AnchorPane secondPane = second.getProgressiveBar();
 
