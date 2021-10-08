@@ -13,7 +13,7 @@ public class Location extends BaseModel{
         return name;
     }
 
-    public void setName(String name) {
+    private void setName(String name) {
         this.name = name;
     }
 
@@ -21,7 +21,7 @@ public class Location extends BaseModel{
         return _id;
     }
 
-    public void set_id(String _id) {
+    private void set_id(String _id) {
         this._id = _id;
     }
 }
