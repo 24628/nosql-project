@@ -12,10 +12,13 @@ import app.views.windows.MainWindow;
 import com.mongodb.client.model.Filters;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
@@ -37,26 +40,23 @@ public class TicketListView extends BaseListView {
     public TicketListView(MainWindow mainWindow) {
         this.mainWindow = mainWindow;
         this.generateTable();
-        this.fillTableWithData(Filters.regex("incident", ".*", "i"));
+        this.fillTableWithData(Filters.not(Filters.eq("status", "Closed")));
 
         // header title and search box
         Label heading = this.addHeaders("Tickets");
         TextField filterTable = new TextField();
         filterTable.setMaxWidth(200);
         filterTable.setPromptText("Enter something...");
-        filterTable.textProperty().addListener((observable, oldValue, newValue) -> {
-            // filter value has te be at least 3 chars long
-
-            if (newValue.toString().length() >= 3) {
-                table.getItems().clear();
-                ticketFilter filter = new ticketFilter();
-                fillTableWithData(filter.filterTickets(newValue));
+        filterTable.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                if (keyEvent.getCode().equals(KeyCode.ENTER)) {
+                    table.getItems().clear();
+                    ticketFilter filter = new ticketFilter();
+                    fillTableWithData(filter.filterTickets(filterTable.getText()));
+                }
             }
-            else {
-                table.getItems().clear();
-                fillTableWithData(Filters.regex("incident", ".*", "i"));
-            }
-        }); // add listener to text field property, when changed, adjust tableview data on filter
+        });
 
         //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
         String[] columnNames = {"reported", "incident", "type", "user_id", "employee_id", "priority", "deadline", "description", "status"};
