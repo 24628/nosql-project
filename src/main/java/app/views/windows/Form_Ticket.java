@@ -83,8 +83,10 @@ public class Form_Ticket extends BaseForm {
         Control[] formItems;
         if (ticket == null)
             formItems = this.createFormItems();
-        else
+        else {
+            headerLabel.setText("Edit Ticket");
             formItems = this.createFormItems(ticket);
+        }
 
 
         Button cancelButton = this.generateFormBtn("CANCEL", 1);

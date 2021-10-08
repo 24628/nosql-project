@@ -73,8 +73,10 @@ public class Form_User extends BaseForm {
         Control[] formItems;
         if (user == null)
             formItems = this.createFormItems();
-        else
+        else{
+            headerLabel.setText("Edit User");
             formItems = this.createFormItems(user);
+        }
 
         // generate form buttons
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
