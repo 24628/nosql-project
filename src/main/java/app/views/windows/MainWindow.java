@@ -15,6 +15,7 @@ public class MainWindow extends BaseForm {
         ticketButton.setOnAction(actionEvent -> layout.getChildren().set(1, new TicketListView(this)));
         userButton.setOnAction(actionEvent -> layout.getChildren().set(1, new UserListView(this)));
         dashboardButton.setOnAction(actionEvent -> layout.getChildren().set(1, new DashboardView(this)));
+        logoutButton.setOnAction(actionEvent -> logoutFromSession());
 
         // Add the menu and the view. Default view will be the student list view
         layout.getChildren().addAll(new DashboardView(this));
@@ -28,6 +29,9 @@ public class MainWindow extends BaseForm {
         stage.setWidth(1200);
         stage.setHeight(600);
         stage.setScene(mainScene);
+
+        System.out.println("is SD emp? " + Session.isServiceDeskEmployee());
+        System.out.println(Session.getUser());
     }
 
     public void setTableView(String option){
