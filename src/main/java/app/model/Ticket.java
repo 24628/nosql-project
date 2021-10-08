@@ -11,18 +11,20 @@ public class Ticket extends BaseModel{
     private LocalDateTime reported;
     private String incident;
     private String type;
-    private String user;
+    private String user_id;
+    private String employee_id;
     private String priority;
     private LocalDateTime deadline;
     private String description;
     private String status;
 
-    public Ticket(LocalDateTime reported, String incident, String type, String user, String priority, LocalDateTime deadline,
+    public Ticket(LocalDateTime reported, String incident, String type, String user_id, String employee_id, String priority, LocalDateTime deadline,
                   String description, String status) {
         this.reported = reported;
         this.incident = incident;
         this.type = type;
-        this.user = user;
+        this.user_id = user_id;
+        this.employee_id = employee_id;
         this.priority = priority;
         this.deadline = deadline;
         this.description = description;
@@ -45,12 +47,20 @@ public class Ticket extends BaseModel{
         this.type = type;
     }
 
-    public String getUser() {
-        return user;
+    public String getUser_id() {
+        return user_id;
     }
 
-    public void setUser(String user_id) {
-        this.user = user_id;
+    public void setUser_id(String user_id) {
+        this.user_id = user_id;
+    }
+
+    public String getEmployee_id() {
+        return employee_id;
+    }
+
+    public void setEmployee_id(String employee_id) {
+        this.employee_id = employee_id;
     }
 
     public String getPriority() {
@@ -99,7 +109,7 @@ public class Ticket extends BaseModel{
 
     public String[] getTicketArray(){
         dateParser parser = new dateParser();
-        String[] array = {parser.toString(reported), incident, type, user, priority, parser.toString(deadline), description};
+        String[] array = {parser.toString(reported), incident, type, user_id, employee_id, priority, parser.toString(deadline), description};
         return array;
     }
 }

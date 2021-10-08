@@ -35,7 +35,8 @@ public class Form_Ticket extends BaseForm {
     private DateTimePicker reported;
     private TextField incident;
     private ComboBox type;
-    private ComboBox user;
+    private ComboBox user_id;
+    private ComboBox employee_id;
     private ComboBox priority;
     private DateTimePicker deadline;
     private TextField description;
@@ -71,6 +72,8 @@ public class Form_Ticket extends BaseForm {
         userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
         dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
     }
+
+
     // --Controls of the form
     protected void addUIControls(GridPane gridPane, Ticket ticket) {
         // Add Header
@@ -106,20 +109,25 @@ public class Form_Ticket extends BaseForm {
         }));
         cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
     }
+
+
     // --create empty form
     private Control[] createFormItems(){
         Control[] formItems = {
                 reported = this.generateDateTimePicker("Date/time reported: ",1),
                 incident = this.generateTextField("Subject of incident:: ", 2),
                 type = this.generateComboBox("Type of incident:", comboBoxTypes, 3),
-                user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
-                priority = this.generateComboBox("Priority", comboBoxPriorityNames,5),
-                deadline = this.generateDateTimePicker("Deadline/follow up: ", 6),
-                description = this.generateTextField("Description: ", 7),
-                status = this.generateComboBox("Status: ", comboBoxStatusValues, 8)
+                user_id = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
+                employee_id = this.generateComboBox("Handled by employee: ", comboBoxUserNames, 5),
+                priority = this.generateComboBox("Priority", comboBoxPriorityNames,6),
+                deadline = this.generateDateTimePicker("Deadline/follow up: ", 7),
+                description = this.generateTextField("Description: ", 8),
+                status = this.generateComboBox("Status: ", comboBoxStatusValues, 9)
         };
         return formItems;
     }
+
+
     // --create form with ticket items filled in
     private Control[] createFormItems(Ticket ticket){
         reported = this.generateDateTimePicker("Date/time reported: ", 1);
@@ -131,22 +139,25 @@ public class Form_Ticket extends BaseForm {
         type = this.generateComboBox("Type of incident:", comboBoxTypes, 3);
         type.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) type, ticket.getType()));
 
-        user = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
-        user.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user, ticket.getUser()));
+        user_id = this.generateComboBox("Reported by user:", comboBoxUserNames, 4);
+        user_id.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) user_id, ticket.getUser_id()));
 
-        priority = this.generateComboBox("Priority", comboBoxPriorityNames, 5);
+        employee_id = this.generateComboBox("handled by employee: ", comboBoxUserNames, 5);
+        employee_id.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) employee_id, ticket.getEmployee_id()));
+
+        priority = this.generateComboBox("Priority", comboBoxPriorityNames, 6);
         priority.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) priority, ticket.getPriority()));
 
-        deadline = this.generateDateTimePicker("Deadline/follow up: ", 6);
+        deadline = this.generateDateTimePicker("Deadline/follow up: ", 7);
         deadline.setDateTimeValue(ticket.getDeadline());
 
-        description = this.generateTextField("Description: ", 7);
+        description = this.generateTextField("Description: ", 8);
         description.setText(ticket.getDescription());
 
-        status = this.generateComboBox("Status: ", comboBoxStatusValues, 8);
+        status = this.generateComboBox("Status: ", comboBoxStatusValues, 9);
         status.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) status, ticket.getStatus()));
 
-        Control[] formItems = { reported, incident, type, user, priority, deadline, description, status};
+        Control[] formItems = { reported, incident, type, user_id, employee_id, priority, deadline, description, status};
         return formItems;
     }
     // --Submit button event handle
@@ -154,10 +165,8 @@ public class Form_Ticket extends BaseForm {
         List<String> data = new ArrayList<String>();
         dateParser parser = new dateParser();
 
-        Document user = db.findOne(Filters.eq("firstName", ticket.getUser()), "users");
-        String userID = user.getObjectId("_id").toString();
-        System.out.println(userID);
         // foreach item in control items, add value to data list
+        int index = 0;
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
@@ -165,16 +174,22 @@ public class Form_Ticket extends BaseForm {
             }
             if(item instanceof ComboBox){
                 final ComboBox parsedComboBox = (ComboBox) item;
-                data.add(parsedComboBox.getValue().toString());
-
+                if (index == 3 || index == 4){
+                    Document user = db.findOne(Filters.eq("firstName", parsedComboBox.getValue()), "users");
+                    String userID = user.getObjectId("_id").toString();
+                    data.add(userID);
+                } else {
+                    data.add(parsedComboBox.getValue().toString());
+                }
             }
             if(item instanceof DateTimePicker){
                 final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
                 data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
+            index++;
         }
 
-        String[] columnNames = {"Reported", "incident", "type", "user", "priority", "deadline", "description, status"};
+        String[] columnNames = {"Reported", "incident", "type", "user_id", "employee_id", "priority", "deadline", "description", "status"};
         Document document = helper.generateDocument(data, columnNames);
 
         // if ticket null, insert new one, otherwise update

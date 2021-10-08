@@ -59,7 +59,7 @@ public class TicketListView extends BaseListView {
         }); // add listener to text field property, when changed, adjust tableview data on filter
 
         //setCellValueFactory in BaseListView (tableview fills table with property's of ticket)
-        String[] columnNames = {"reported", "incident", "type", "user", "priority", "deadline", "description", "status"};
+        String[] columnNames = {"reported", "incident", "type", "user_id", "employee_id", "priority", "deadline", "description", "status"};
         this.generateData(columnNames);
 
         HBox menu = new HBox();
@@ -85,6 +85,7 @@ public class TicketListView extends BaseListView {
                         doc.get("incident").toString(),
                         doc.get("type").toString(),
                         db.findOne(Filters.eq("_id", new ObjectId((String) doc.get("user_id"))), "users").getString("firstName"),
+                        db.findOne(Filters.eq("_id", new ObjectId((String) doc.get("employee_id"))), "users").getString("firstName"),
                         doc.get("priority").toString(),
                         parser.toDate(doc.get("deadline").toString()),
                         doc.get("description").toString(),

@@ -148,7 +148,7 @@ public class BaseForm {
         btn.setPrefHeight(40);
         btn.setDefaultButton(true);
         btn.setPrefWidth(100);
-        this.form.add(btn, placement, 9, 2, 1);
+        this.form.add(btn, placement, 10, 2, 1);
         GridPane.setMargin(btn, new Insets(20, 0,20,0));
 
         return btn;
