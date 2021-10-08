@@ -23,7 +23,7 @@ public final class Session {
         return user;
     }
 
-    public void destroy() {
+    public static void destroy() {
         user = null;
     }
 
