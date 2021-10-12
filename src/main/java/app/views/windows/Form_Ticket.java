@@ -20,10 +20,13 @@ import org.bson.conversions.Bson;
 import org.bson.types.ObjectId;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class Form_Ticket extends BaseForm {
 
@@ -186,9 +189,22 @@ public class Form_Ticket extends BaseForm {
                     data.add(parsedComboBox.getValue().toString());
                 }
             }
+//            if(item instanceof DateTimePicker){
+//                final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
+//                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+//            }
             if(item instanceof DateTimePicker){
                 final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
-                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+                if (parsedDateTimePicker.getDateTimeValue().isBefore(LocalDateTime.now()) &&
+                        parsedDateTimePicker.getDateTimeValue().isBefore(ticket.getDeadline())){
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setHeaderText("Date time Error");
+                    errorAlert.setContentText("Date time value not valid!");
+                    errorAlert.showAndWait();
+                    return;
+                }
+                else
+                    data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
             index++;
         }
