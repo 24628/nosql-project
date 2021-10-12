@@ -118,7 +118,7 @@ public class Form_Ticket extends BaseForm {
                 incident = this.generateTextField("Subject of incident:: ", 2),
                 type = this.generateComboBox("Type of incident:", comboBoxTypes, 3),
                 user_id = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
-                employee_id = this.generateComboBox("Handled by employee: ", comboBoxUserNames, 5),
+                employee_id = this.generateComboBox("Handled by employee: ", comboBoxUserNames, 5), // todo default user = current user
                 priority = this.generateComboBox("Priority", comboBoxPriorityNames,6),
                 deadline = this.generateDateTimePicker("Deadline/follow up: ", 7),
                 description = this.generateTextField("Description: ", 8),
