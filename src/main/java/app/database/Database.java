@@ -29,7 +29,6 @@ public class Database {
         users = this.findAll("users");
     }
 
-    //@todo Make sure item doesn't already exist in the database!
     /** insert one document into the collection
      * @param data Document data
      * @param CollectionName collection you want to insert to
@@ -38,7 +37,6 @@ public class Database {
         this.database.getCollection(CollectionName).insertOne(data);
     }
 
-    //todo Make sure items don't already exist in the database!
     /** Insert many documents into the collection
      * @param data Document data in an array list
      * @param CollectionName collection you want to insert to
