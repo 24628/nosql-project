@@ -55,7 +55,7 @@ public class Form_Ticket extends BaseForm {
         // cmb values
         comboBoxTypes = new String[]{"Hardware", "Software", "Service"};
         comboBoxUserNames = getAllUserNames();
-        comboBoxPriorityNames = new String[]{"High", "Low", "Normal"};
+        comboBoxPriorityNames = new String[]{"High",  "Normal", "Low"};
         comboBoxStatusValues = new String[]{"Closed", "Normal", "Escalated"};
 
         // add controls

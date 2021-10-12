@@ -24,7 +24,7 @@ public final class Session {
     }
 
     public static void destroy() {
-        user = null;
+        instance = null;
     }
 
     public static boolean isServiceDeskEmployee(){
