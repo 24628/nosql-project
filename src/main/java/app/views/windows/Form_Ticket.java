@@ -25,6 +25,7 @@ import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -50,6 +51,7 @@ public class Form_Ticket extends BaseForm {
     private String[] comboBoxUserNames;
     private final String[] comboBoxPriorityNames;
     private final String[] comboBoxStatusValues;
+
     // --Constructor
     public Form_Ticket(Ticket ticket) {
         db = new Database("noSql");
@@ -58,7 +60,7 @@ public class Form_Ticket extends BaseForm {
         // cmb values
         comboBoxTypes = new String[]{"Hardware", "Software", "Service"};
         comboBoxUserNames = getAllUserNames();
-        comboBoxPriorityNames = new String[]{"High",  "Normal", "Low"};
+        comboBoxPriorityNames = new String[]{"High", "Normal", "Low"};
         comboBoxStatusValues = new String[]{"Closed", "Normal", "Escalated"};
 
         // add controls
@@ -82,9 +84,9 @@ public class Form_Ticket extends BaseForm {
         // Add Header
         Label headerLabel = new Label("Create Ticket");
         headerLabel.setFont(Font.font("Verdana", FontWeight.BOLD, 20));
-        gridPane.add(headerLabel, 0,0,2,1);
+        gridPane.add(headerLabel, 0, 0, 2, 1);
         GridPane.setHalignment(headerLabel, HPos.CENTER);
-        GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
+        GridPane.setMargin(headerLabel, new Insets(20, 0, 20, 0));
 
         Control[] formItems;
         if (ticket == null)
@@ -110,19 +112,19 @@ public class Form_Ticket extends BaseForm {
                 System.out.println("data submit not succesfull: " + err);
             }
         }));
-        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent,"Ticket"));
+        cancelButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
     }
 
 
     // --create empty form
-    private Control[] createFormItems(){
+    private Control[] createFormItems() {
         Control[] formItems = {
-                reported = this.generateDateTimePicker("Date/time reported: ",1),
+                reported = this.generateDateTimePicker("Date/time reported: ", 1),
                 incident = this.generateTextField("Subject of incident:: ", 2),
                 type = this.generateComboBox("Type of incident:", comboBoxTypes, 3),
                 user_id = this.generateComboBox("Reported by user:", comboBoxUserNames, 4),
                 employee_id = this.generateComboBox("Handled by employee: ", comboBoxUserNames, 5), // todo maybe default user = current user
-                priority = this.generateComboBox("Priority", comboBoxPriorityNames,6),
+                priority = this.generateComboBox("Priority", comboBoxPriorityNames, 6),
                 deadline = this.generateDateTimePicker("Deadline/follow up: ", 7),
                 description = this.generateTextField("Description: ", 8),
                 status = this.generateComboBox("Status: ", comboBoxStatusValues, 9)
@@ -131,9 +133,8 @@ public class Form_Ticket extends BaseForm {
     }
 
 
-
     // --create form with ticket items filled in
-    private Control[] createFormItems(Ticket ticket){
+    private Control[] createFormItems(Ticket ticket) {
         reported = this.generateDateTimePicker("Date/time reported: ", 1);
         reported.setDateTimeValue(ticket.getReported());
 
@@ -161,27 +162,27 @@ public class Form_Ticket extends BaseForm {
         status = this.generateComboBox("Status: ", comboBoxStatusValues, 9);
         status.getSelectionModel().select(helper.getCMBIndex((ComboBox<String>) status, ticket.getStatus()));
 
-        Control[] formItems = { reported, incident, type, user_id, employee_id, priority, deadline, description, status};
+        Control[] formItems = {reported, incident, type, user_id, employee_id, priority, deadline, description, status};
         return formItems;
     }
 
 
-
     // --Submit button event handle
-    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack){
+    protected void handleSubmitBtnClick(Control[] formItems, Ticket ticket, ICallBack callBack) {
         List<String> data = new ArrayList<String>();
         dateParser parser = new dateParser();
 
         // foreach item in control items, add value to data list
         int index = 0;
         for (Control item : formItems) {
-            if(item instanceof TextField){
+            if (item instanceof TextField) {
                 final TextField parsedTextField = (TextField) item;
+                if(Objects.equals(parsedTextField.getText(), "")) return;
                 data.add(parsedTextField.getText());
             }
-            if(item instanceof ComboBox){
+            if (item instanceof ComboBox) {
                 final ComboBox parsedComboBox = (ComboBox) item;
-                if (index == 3 || index == 4){
+                if (index == 3 || index == 4) {
                     Document user = db.findOne(Filters.eq("firstName", parsedComboBox.getValue()), "users");
                     String userID = user.getObjectId("_id").toString();
                     data.add(userID);
@@ -189,22 +190,19 @@ public class Form_Ticket extends BaseForm {
                     data.add(parsedComboBox.getValue().toString());
                 }
             }
-//            if(item instanceof DateTimePicker){
-//                final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
-//                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
-//            }
-            if(item instanceof DateTimePicker){
+            if (item instanceof DateTimePicker) {
                 final DateTimePicker parsedDateTimePicker = (DateTimePicker) item;
                 if (parsedDateTimePicker.getDateTimeValue().isBefore(LocalDateTime.now()) &&
-                        parsedDateTimePicker.getDateTimeValue().isBefore(ticket.getDeadline())){
-                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
-                    errorAlert.setHeaderText("Date time Error");
-                    errorAlert.setContentText("Date time value not valid!");
-                    errorAlert.showAndWait();
+                        ticket == null) {
+                    this.showMessage("Date time Error","Date time value not valid!");
                     return;
                 }
-                else
-                    data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
+                if (parsedDateTimePicker.getDateTimeValue().isBefore(LocalDateTime.now()) && parsedDateTimePicker.getDateTimeValue().isBefore(ticket.getDeadline())) {
+                    this.showMessage("Date time Error","Date time value not valid!");
+                    return;
+                }
+
+                data.add(parser.toString(parsedDateTimePicker.getDateTimeValue()));
             }
             index++;
         }
@@ -221,15 +219,13 @@ public class Form_Ticket extends BaseForm {
                 db.replaceOne(filter, document, "Tickets");
             }
             callBack.onSucces();
-        }catch (Exception e){
+        } catch (Exception e) {
             callBack.onError(e.toString());
         }
     }
 
 
-
-
-    private String[] getAllUserNames(){
+    private String[] getAllUserNames() {
         List<String> users = new ArrayList<>();
         for (Document doc : db.findAll("users")) {
             users.add(doc.getString("firstName"));

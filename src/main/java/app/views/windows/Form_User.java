@@ -20,6 +20,7 @@ import org.bson.conversions.Bson;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Form_User extends BaseForm {
 
@@ -146,6 +147,7 @@ public class Form_User extends BaseForm {
         for (Control item : formItems) {
             if(item instanceof TextField){
                 final TextField parsedTextField = (TextField) item;
+                if(Objects.equals(parsedTextField.getText(), "")) return;
                 data.add(parsedTextField.getText());
             }
             if(item instanceof ComboBox) {

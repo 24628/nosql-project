@@ -121,6 +121,7 @@ public class BaseForm {
         ComboBox<String> comboBox = new ComboBox<>();
         comboBox.setPrefWidth(400);
         comboBox.getItems().addAll(comboBoxItems);
+        comboBox.getSelectionModel().selectFirst();
         this.form.add(comboBox, 1, placement);
 
         return comboBox;
@@ -178,5 +179,12 @@ public class BaseForm {
 
         Form_Login form = new Form_Login();
         form.getStage().show();
+    }
+
+    protected void showMessage(String header, String text){
+        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        errorAlert.setHeaderText(header);
+        errorAlert.setContentText(text);
+        errorAlert.showAndWait();
     }
 }

@@ -18,15 +18,9 @@ public class Database {
     //private final String conS = "mongodb+srv://Bram:Mdt58w8d1!@clusternosql.q16av.mongodb.net/ProjectNoSQL?retryWrites=true&w=majority";
     private final String conS = "mongodb+srv://dbUser:Welkom1234!@cluster0.fpuzw.mongodb.net/myFirstDatabase?retryWrites=true&w=majority";
 
-    private List<Document> tickets;
-    private List<Document> users;
-
     public Database(String DatabaseName) {
         MongoClient mongoClient = MongoClients.create(this.conS);
         this.database = mongoClient.getDatabase(DatabaseName);
-
-        tickets = this.findMany(Filters.not(Filters.eq("status", "Closed")), "tickets");
-        users = this.findAll("users");
     }
 
     /** insert one document into the collection
@@ -106,21 +100,5 @@ public class Database {
             MongoCollection<Document> collection = this.database.getCollection(CollectionName);
             collection.replaceOne(filterString, (Document) data);
         }
-    }
-
-    public List<Document> getTickets() {
-        return tickets;
-    }
-
-    public void setTickets(List<Document> tickets) {
-        this.tickets = tickets;
-    }
-
-    public List<Document> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<Document> users) {
-        this.users = users;
     }
 }
