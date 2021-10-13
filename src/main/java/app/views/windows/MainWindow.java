@@ -7,6 +7,8 @@ import app.views.partial.UserListView;
 import app.views.partial.DashboardView;
 import javafx.scene.Scene;
 
+import java.util.Objects;
+
 public class MainWindow extends BaseForm {
 
     public MainWindow() {
@@ -22,6 +24,7 @@ public class MainWindow extends BaseForm {
         // Create the main scene.
         // Scene mainScene = new StyledScene(layout);
         Scene mainScene = new Scene(layout);
+        mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
 
         // Let's go!
         stage.setTitle("NoDesk");

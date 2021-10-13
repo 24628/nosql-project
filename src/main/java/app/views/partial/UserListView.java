@@ -26,16 +26,16 @@ public class UserListView extends BaseListView {
 
         Label heading = this.addHeaders("Users");
 
-        TextField filterTable = new TextField();
-        filterTable.setMaxWidth(200);
-        filterTable.setPromptText("Enter something...");
+//        TextField filterTable = new TextField();
+//        filterTable.setMaxWidth(200);
+//        filterTable.setPromptText("Enter something...");
 
         String[] columnNames = {"firstName", "lastName", "userType", "email", "phoneNumber", "location"};
         this.generateData(columnNames);
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
 
-        getChildren().addAll(heading, filterTable, table, menu);
+        getChildren().addAll(heading, /*filterTable,*/ table, menu);
     }
 
     protected void fillTableWithData() {

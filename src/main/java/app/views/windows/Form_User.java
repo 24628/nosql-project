@@ -49,6 +49,7 @@ public class Form_User extends BaseForm {
         // Create the main scene.
         // Scene mainScene = new StyledScene(layout);
         Scene form_User = new Scene(layout);
+        form_User.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
 
         // Let's go!
         stage.setTitle("Users Form");
@@ -58,6 +59,7 @@ public class Form_User extends BaseForm {
         ticketButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Ticket"));
         userButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "User"));
         dashboardButton.setOnAction(actionEvent -> openMainAndClose(actionEvent, "Dashboard"));
+        logoutButton.setOnAction(actionEvent -> logoutFromSession());
 
     }
 

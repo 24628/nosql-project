@@ -46,12 +46,17 @@ public class BaseForm {
         VBox container = new VBox();
         VBox header = new VBox();
         HBox nav_bar = new HBox();
+        header.getStyleClass().add("dark-header");
+        nav_bar.getStyleClass().add("dark-navbar");
 
         // labels for title and description
         Label title = new Label("NoDesk");
         Label description = new Label("Licensed to: The Garden Group");
         title.setFont(Font.font("Verdana", 30));
+        title.getStyleClass().add("main-header-label");
         description.setFont(Font.font("Verdana", 20));
+        description.getStyleClass().add("main-header-label");
+
         header.setAlignment(Pos.TOP_RIGHT);
         header.setBackground(new Background(new BackgroundFill(Color.LIGHTGREY, CornerRadii.EMPTY, Insets.EMPTY)));
         header.getChildren().addAll(title, description);
@@ -156,7 +161,7 @@ public class BaseForm {
         Button btn = new Button(btnTitle);
         btn.setPrefHeight(40);
         btn.setDefaultButton(true);
-        btn.setPrefWidth(100);
+        btn.setPrefWidth(120);
         this.form.add(btn, placement, 10, 2, 1);
         GridPane.setMargin(btn, new Insets(20, 0,20,0));
 

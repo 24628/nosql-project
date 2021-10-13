@@ -1,0 +1,56 @@
+/*Color of main header*/
+.dark-header {
+    -fx-background-color: #282828;
+}
+
+/*Color of menu box*/
+.dark-navbar {
+    -fx-background-color: #404040;
+    -fx-padding: 0 0 5 0;
+}
+
+/*Color of labels in header*/
+.main-header-label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/*Styling of all buttons*/
+.button {
+    -fx-background-color: #404040;
+    -fx-border-width: 1px;
+    -fx-border-color: #404040;
+    -fx-border-radius: 0px 0px 0px 0px;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/*Styling of custom delete button*/
+.button-delete {
+    -fx-background-color: red;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-border-width: 0;
+}
+
+/*Show cursor hand when hovering over button*/
+.button:hover {
+    -fx-cursor: hand;
+}
+
+/*#############  Tableview Styling  #############*/
+.table-view .table-cell{
+    -fx-border-color: transparent;
+    -fx-padding: 2 0 2 10px;
+}
+
+/*Styling of selected row*/
+.table-row-cell:selected {
+    -fx-background-color: #b3b3b3;
+    -fx-text-background-color: #121212;
+}
+
+/*Styling of cells*/
+.table-row-cell{
+    -fx-background-color: white;
+}

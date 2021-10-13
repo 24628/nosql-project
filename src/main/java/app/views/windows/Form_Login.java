@@ -45,11 +45,12 @@ public class Form_Login extends BaseForm {
         layout.getChildren().addAll(this.form);
 
         // Create the main scene.
-        Scene Form_Login = new Scene(layout);
+        Scene form_Login = new Scene(layout);
+        form_Login.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
 
         // Let's go!
         stage.setTitle("Form Ticket");
-        stage.setScene(Form_Login);
+        stage.setScene(form_Login);
 
     }
 

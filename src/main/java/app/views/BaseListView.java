@@ -10,6 +10,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 
+import java.util.Objects;
+
 public class BaseListView extends VBox {
     protected Database db;
     protected TableView<BaseModel> table;
@@ -37,6 +39,9 @@ public class BaseListView extends VBox {
         Button addButton = new Button(addText);
         Button editButton = new Button(editText);
         Button deleteButton = new Button(deleteText);
+
+        deleteButton.getStyleClass().add("button-delete");
+
         btnMenu.getChildren().addAll(addButton, editButton, deleteButton);
 
         addButton.setOnAction(actionEvent -> this.handleCreateBtnClick());
