@@ -2,19 +2,11 @@ package app.database.migrations.partials;
 
 import app.helpers.SHA512;
 import app.database.migrations.Migrator;
-import app.helpers.dateParser;
-import com.mongodb.client.model.Filters;
 import org.bson.Document;
-
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
-
-import static com.mongodb.client.model.Filters.eq;
 
 public class GenerateUserMigration extends Migrator {
 

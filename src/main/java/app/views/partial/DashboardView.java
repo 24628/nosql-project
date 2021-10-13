@@ -5,17 +5,12 @@ import app.helpers.generateProgressiveCircle;
 import app.views.BaseListView;
 import app.views.windows.MainWindow;
 import com.mongodb.client.model.Filters;
-import javafx.geometry.HPos;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Arc;
-import javafx.scene.shape.ArcType;
 import javafx.scene.text.Font;
-import org.controlsfx.control.spreadsheet.Grid;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +30,6 @@ public class DashboardView extends BaseListView {
                     Filters.not(Filters.eq("status" , "Closed"))
                 ),
         "Tickets").size();
-        //totalTickets = this.db.findAll("Tickets").size();
         totalTickets = this.db.findMany(Filters.not(Filters.eq("status" , "Closed")), "Tickets").size();
         openTickets = this.db.findMany(Filters.eq("status", "Normal"), "Tickets").size();
 
@@ -58,7 +52,6 @@ public class DashboardView extends BaseListView {
         AnchorPane secondPane = second.getProgressiveBar();
 
         GridPane gridPane = new GridPane();
-        //gridPane.setGridLinesVisible(true);
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setMinWidth(500);
         gridPane.setPrefWidth(500);

@@ -2,8 +2,6 @@ package app.views.windows;
 
 import app.ICallBack;
 import app.database.Database;
-import app.helpers.controls.DateTimePicker;
-import app.helpers.dateParser;
 import app.helpers.documentHandling;
 import app.model.User;
 import app.views.BaseForm;
@@ -17,7 +15,6 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

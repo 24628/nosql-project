@@ -17,13 +17,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import org.bson.types.ObjectId;
-
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -96,17 +91,14 @@ public class Form_Ticket extends BaseForm {
             formItems = this.createFormItems(ticket);
         }
 
-
         Button cancelButton = this.generateFormBtn("CANCEL", 1);
         Button submitButton = this.generateFormBtn("SUBMIT TICKET", 0);
-
         submitButton.setOnAction(actionEvent -> this.handleSubmitBtnClick(formItems, ticket, new ICallBack() {
             @Override
             public void onSucces() {
                 System.out.println("data submit succesfull!");
                 openMainAndClose(actionEvent, "Ticket"); // open / refresh tableview
             }
-
             @Override
             public void onError(String err) {
                 System.out.println("data submit not succesfull: " + err);

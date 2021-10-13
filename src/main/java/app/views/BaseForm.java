@@ -83,7 +83,7 @@ public class BaseForm {
         // Instantiate a new Grid Pane
         GridPane gridPane = new GridPane();
 
-        // Position the pane at the center of the screen, both vertically and horizontally and add padding
+        // Position the pane at the center of the screen
         gridPane.setAlignment(Pos.CENTER);
         gridPane.setPadding(new Insets(40, 80, 40, 40));
 

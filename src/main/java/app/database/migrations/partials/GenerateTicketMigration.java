@@ -8,7 +8,6 @@ import org.bson.Document;
 import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -43,6 +42,4 @@ public class GenerateTicketMigration extends Migrator {
                 .append("description", generateActualText( ThreadLocalRandom.current().nextInt(60, 250)))
                 .append("status", selectRandomFromArray(status));
     }
-
-
 }

@@ -2,7 +2,6 @@ package app.views;
 
 import app.database.Database;
 import app.model.BaseModel;
-import app.model.User;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -18,7 +17,6 @@ public class BaseListView extends VBox {
     public BaseListView(){
         db = new Database("noSql");
     }
-
 
     protected Label addHeaders(String headerName){
         this.setPadding(new Insets(20));

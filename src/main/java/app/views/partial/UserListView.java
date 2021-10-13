@@ -1,6 +1,5 @@
 package app.views.partial;
 
-import app.helpers.dateParser;
 import app.model.BaseModel;
 import app.model.User;
 import app.views.BaseListView;
@@ -13,8 +12,6 @@ import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import org.bson.Document;
 import org.bson.conversions.Bson;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 
 public class UserListView extends BaseListView {
 
