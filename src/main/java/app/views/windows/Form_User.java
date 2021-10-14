@@ -71,8 +71,12 @@ public class Form_User extends BaseForm {
         GridPane.setMargin(headerLabel, new Insets(20, 0,20,0));
 
         Control[] formItems;
-        headerLabel.setText("Edit User");
-        formItems = this.createFormItems(user);
+        if (user == null)
+            formItems = this.createFormItems();
+        else{
+            headerLabel.setText("Edit User");
+            formItems = this.createFormItems(user);
+        }
 
 
         // generate form buttons
