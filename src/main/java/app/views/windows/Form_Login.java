@@ -36,7 +36,6 @@ public class Form_Login extends BaseForm {
 
     public Form_Login() {
         // db conn
-        //db = new Database("ProjectNoSQL");
         db = new Database("noSql");
         helper = new documentHandling();
 

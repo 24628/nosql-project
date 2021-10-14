@@ -181,7 +181,6 @@ public class BaseForm {
     protected void logoutFromSession(){
         this.getStage().close();
         Session.destroy();
-
         Form_Login form = new Form_Login();
         form.getStage().show();
     }

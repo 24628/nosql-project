@@ -31,7 +31,7 @@ public class UserListView extends BaseListView {
 
         HBox menu = this.createCrudButtons("add User", "edit User", "Delete User");
 
-        getChildren().addAll(heading, /*filterTable,*/ table, menu);
+        getChildren().addAll(heading, table, menu);
     }
 
     protected void fillTableWithData() {

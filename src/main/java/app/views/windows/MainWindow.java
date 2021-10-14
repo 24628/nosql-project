@@ -22,7 +22,6 @@ public class MainWindow extends BaseForm {
         layout.getChildren().addAll(new DashboardView(this));
 
         // Create the main scene.
-        // Scene mainScene = new StyledScene(layout);
         Scene mainScene = new Scene(layout);
         mainScene.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
 

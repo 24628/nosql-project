@@ -47,7 +47,6 @@ public class Form_User extends BaseForm {
         layout.getChildren().addAll(this.form);
 
         // Create the main scene.
-        // Scene mainScene = new StyledScene(layout);
         Scene form_User = new Scene(layout);
         form_User.getStylesheets().add(Objects.requireNonNull(getClass().getResource("/css/style.css")).toString());
 
