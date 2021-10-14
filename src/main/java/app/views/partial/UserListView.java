@@ -26,10 +26,6 @@ public class UserListView extends BaseListView {
 
         Label heading = this.addHeaders("Users");
 
-//        TextField filterTable = new TextField();
-//        filterTable.setMaxWidth(200);
-//        filterTable.setPromptText("Enter something...");
-
         String[] columnNames = {"firstName", "lastName", "userType", "email", "phoneNumber", "location"};
         this.generateData(columnNames);
 
